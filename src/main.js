@@ -6,6 +6,11 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import GAuth from 'vue-google-oauth2';
+import { initializeApp } from 'firebase/app';
+
+initializeApp({
+  storageBucket: 'gs://instafood-93ec5.appspot.com'
+});
 
 const gauthOption = {
   clientId: '937902885217-7rhrnq4k7rk2i6ga3ek3uobl83e45kso.apps.googleusercontent.com',

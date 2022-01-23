@@ -1,6 +1,5 @@
 function StorageProperty(key) {
   this.key = key;
-  console.log('creating', key);
 }
 
 StorageProperty.prototype.value = function() {

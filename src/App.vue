@@ -14,11 +14,18 @@ import storage from './helpers/storage';
 
 export default {
   name: 'App',
+  watch: {
+    '$store.state.user'(value) {
+      if (value && !value.pictureUrl) {
+        this.$store.dispatch('fetchDefaultProfilePicture');
+      }
+    }
+  },
   beforeCreate() {
     const accessToken = storage.accessToken.value();
 
     if (accessToken) {
-      this.$store.dispatch('verifyToken', accessToken);
+      this.$store.dispatch('fetchUser', accessToken);
     }
   }
 }
