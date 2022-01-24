@@ -9,7 +9,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user: null
+    user: null,
+    posts: [],
+    createdPost: null
   },
   getters: {
     isLoggedIn(state) {
@@ -28,6 +30,12 @@ export default new Vuex.Store({
         ...state.user,
         pictureUrl
       }
+    },
+    SET_POSTS(state, posts) {
+      state.posts = posts;
+    },
+    SET_CREATED_POST(state, post) {
+      state.createdPost = post;
     }
   },
   actions: {
@@ -61,6 +69,30 @@ export default new Vuex.Store({
         if (url) {
           context.commit('SET_PROFILE_PICTURE', url);
         }
+      } catch(err) {
+        console.log(err);
+      }
+    },
+    async createPost(context, postContent) {
+      try {
+        const { data } = await axios.post('/posts', {
+          content: postContent
+        }, {
+          headers: { access_token: storage.accessToken.value() }
+        });
+
+        context.commit('SET_CREATED_POST', data);
+      } catch(err) {
+        console.log(err);
+      }
+    },
+    async fetchPosts(context) {
+      try {
+        const { data } = await axios.get('/posts', {
+          headers: { access_token: storage.accessToken.value() }
+        });
+
+        context.commit('SET_POSTS', data);
       } catch(err) {
         console.log(err);
       }

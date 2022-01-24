@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="row">
+    <div class="row mb-5">
       <div class="col d-flex justify-content-end">
         <img id="profile-picture" :src="userPicture">
       </div>
@@ -9,12 +9,26 @@
         <h5>{{ userEmail }}</h5>
       </div>
     </div>
+    <div class="row">
+      <div class="col-6 mx-auto">
+        <PostForm></PostForm>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <PostsList></PostsList>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import PostsList from '../components//PostsList.vue';
+import PostForm from '../components/PostForm.vue';
+
 export default {
   name: 'Home',
+  components: { PostsList, PostForm },
   data() {
     return {
       userPicture: ''

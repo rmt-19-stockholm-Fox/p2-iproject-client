@@ -56,4 +56,8 @@ export default {
     }
   }
 }
+
+hr {
+  background-color: #ccc;
+}
 </style>

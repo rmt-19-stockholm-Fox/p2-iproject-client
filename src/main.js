@@ -7,6 +7,12 @@ import router from './router';
 import store from './store';
 import GAuth from 'vue-google-oauth2';
 import { initializeApp } from 'firebase/app';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faPlus);
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 initializeApp({
   storageBucket: 'gs://instafood-93ec5.appspot.com'
