@@ -16,6 +16,7 @@ export default {
   data() {
     return {
       user: {},
+      token: localStorage.getItem("access_token"),
     };
   },
   methods: {
@@ -23,9 +24,13 @@ export default {
       changeUserData: "CHANGE_USERDATA",
     }),
     ...mapActions(["login"]),
-    loginHandler() {
+    async loginHandler() {
       this.changeUserData(this.user);
-      this.login();
+      await this.login();
+      if (localStorage.getItem("access_token")) {
+        console.log("masuk");
+        this.$router.push("/");
+      }
     },
   },
 };

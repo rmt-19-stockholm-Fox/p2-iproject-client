@@ -7,10 +7,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     userData: {},
+    registrationStatus: false,
   },
   mutations: {
     CHANGE_USERDATA(state, payload) {
       state.userData = payload;
+    },
+    CHANGE_REGISTRATION_STATUS(state, payload) {
+      state.registrationStatus = payload;
     },
   },
   actions: {
@@ -26,8 +30,29 @@ export default new Vuex.Store({
           },
         });
         localStorage.setItem("access_token", login.data.access_token);
+        localStorage.setItem("userId", login.data.userId);
       } catch (err) {
         console.log(err.response);
+      }
+    },
+    async registration(context) {
+      try {
+        const userData = context.state.userData;
+        const registerUser = await axios({
+          url: "http://localhost:3000/register",
+          method: "post",
+          data: {
+            name: userData.name,
+            username: userData.username,
+            password: userData.password,
+            email: userData.email,
+            phoneNumber: userData.phoneNumber,
+          },
+        });
+        console.log(registerUser);
+        context.commit("CHANGE_REGISTRATION_STATUS", true);
+      } catch (err) {
+        console.log(err.response.data);
       }
     },
   },
