@@ -1,12 +1,11 @@
 <template>
   <div>
-    <div>
-      <navbar></navbar>
+    <div >
+      <navbar ></navbar>
     </div>
     <div>
+      <router-link to="/login" />
     </div>
-
-    <div></div>
     <router-view />
   </div>
 </template>

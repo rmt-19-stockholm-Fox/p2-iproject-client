@@ -171,6 +171,7 @@ export default {
         this.changeToLogin()
       } else if(!this.registerPage) {
         await this.doLogin(this.credential);
+        this.$router.push('/')
 
       }
     }
