@@ -11,9 +11,7 @@
     <b-form-file
       v-model="selectedPostImage"
       :state="Boolean(selectedPostImage)"
-      class="mb-3"
-      placeholder="Choose a file or drop it here..."
-      drop-placeholder="Drop file here..."
+      id="file-input" class="mb-3 d-none"
     ></b-form-file>
     <div id="images-list" class="d-flex flex-wrap justify-content-center mb-5">
       <div id="image-box-1"
@@ -26,7 +24,7 @@
               style="font-size: 2.25rem; margin-bottom: 5px;"
             />
           </div>
-          <div style="font-size: 0.8rem; color: #777;">add image</div>
+          <div style="font-size: 0.8rem;">add image</div>
         </div>
       </div>
     </div>
@@ -46,7 +44,7 @@ export default {
       postContent: "",
       selectedPostImage: null,
       selectedImageNum: 1,
-      postImages: [],
+      postImages: []
     };
   },
   watch: {
@@ -72,8 +70,12 @@ export default {
             document.getElementById("images-list").appendChild(newImageBox);
 
             this.postImages.push(this.selectedPostImage);
-            this.selectImage(newImageNum);
+            this.selectedImageNum = newImageNum;
+          } else {
+            this.$store.commit('IMAGE_PREVIEW_IN', currentImg.src);
           }
+          
+          this.selectedPostImage = null;
         };
 
         reader.readAsDataURL(value);
@@ -117,11 +119,43 @@ export default {
     selectImage(imageNum) {
       document.getElementById(`image-box-${this.selectedImageNum}`)
         .classList.remove('selected');
-      document.getElementById(`image-box-${imageNum}`)
-        .classList.add('selected');
 
       this.selectedImageNum = imageNum;
       this.selectedPostImage = null;
+
+      if (imageNum > this.postImages.length) {
+        document.getElementById('file-input').click();
+      } else {
+        const box = document.getElementById(`image-box-${imageNum}`);
+        const img = box.getElementsByTagName('img')[0];
+        
+        this.$store.commit('IMAGE_PREVIEW_IN', img.src);
+        this.$store.commit('SET_IMAGE_VIEWER', {
+          onChange: () => {
+            document.getElementById('file-input').click();
+          },
+          onDiscard: () => this.discardImage()
+        });
+      }
+    },
+    discardImage() {
+      const discarded = document.getElementById(`image-box-${this.selectedImageNum}`);
+      const imagesList = document.getElementById("images-list");
+      const imageBoxes = imagesList.children;
+
+      imagesList.removeChild(discarded);
+      this.postImages.splice(this.selectedImageNum-1, 1);
+
+      for (let i = 0; i < imageBoxes.length; i++) {
+        const num = Number(imageBoxes[i].id.split('-')[2]);
+        
+        if (num > this.selectedImageNum) {
+          imageBoxes[i].setAttribute('id', `image-box-${num-1}`);
+          imageBoxes[i].onclick = () => this.selectImage(num-1);
+        }
+      }
+
+      this.$store.commit('IMAGE_PREVIEW_OUT');
     },
     resetForm() {
       this.postContent = '';
@@ -158,7 +192,7 @@ export default {
     &:hover {
       transform: scale(1.2);
       border: 1px solid rgba($color: black, $alpha: 0.2);
-      z-index: 100;
+      z-index: 50;
     }
   }
 
@@ -177,5 +211,11 @@ export default {
   align-items: center;
   width: 100%;
   height: 100%;
+  color: #555;
+
+  &:hover {
+    outline: 2px solid #555;
+    color: #333;
+  }
 }
 </style>

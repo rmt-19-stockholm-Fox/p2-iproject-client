@@ -11,7 +11,13 @@ export default new Vuex.Store({
   state: {
     user: null,
     posts: [],
-    createdPost: null
+    createdPost: null,
+    isPreviewingImage: false,
+    previewedImage: '',
+    imageViewer: {
+      onChange: null,
+      onDiscard: null
+    }
   },
   getters: {
     isLoggedIn(state) {
@@ -36,6 +42,16 @@ export default new Vuex.Store({
     },
     SET_CREATED_POST(state, post) {
       state.createdPost = post;
+    },
+    IMAGE_PREVIEW_IN(state, imageSrc) {
+      state.isPreviewingImage = true;
+      state.previewedImage = imageSrc;
+    },
+    IMAGE_PREVIEW_OUT(state) {
+      state.isPreviewingImage = false;
+    },
+    SET_IMAGE_VIEWER(state, listeners) {
+      state.imageViewer = listeners;
     }
   },
   actions: {
@@ -47,7 +63,7 @@ export default new Vuex.Store({
 
         storage.accessToken.set(data.access_token);
         context.dispatch('fetchUser', data.access_token);
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
     },
@@ -58,7 +74,7 @@ export default new Vuex.Store({
         });
 
         context.commit('LOG_IN', data);
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
     },
@@ -69,7 +85,7 @@ export default new Vuex.Store({
         if (url) {
           context.commit('SET_PROFILE_PICTURE', url);
         }
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
     },
@@ -82,7 +98,7 @@ export default new Vuex.Store({
         });
 
         context.commit('SET_CREATED_POST', data);
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
     },
@@ -93,7 +109,7 @@ export default new Vuex.Store({
         });
 
         context.commit('SET_POSTS', data);
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
     }

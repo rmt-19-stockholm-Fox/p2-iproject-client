@@ -6,14 +6,17 @@
       <router-link v-if="$store.getters.isLoggedIn" to="/logout">Logout</router-link>
     </div>
     <router-view/>
+    <ImagePreview></ImagePreview>
   </div>
 </template>
 
 <script>
 import storage from './helpers/storage';
+import ImagePreview from './components/ImagePreview.vue';
 
 export default {
   name: 'App',
+  components: { ImagePreview },
   watch: {
     '$store.state.user'(value) {
       if (value && !value.pictureUrl) {
