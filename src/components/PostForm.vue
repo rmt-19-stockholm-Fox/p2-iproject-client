@@ -20,7 +20,7 @@
         <img width="140" height="140" style="border-radius: 5px;" />
         <div class="image-placeholder">
           <div>
-            <font-awesome-icon :icon="['fas', 'plus']" 
+            <font-awesome-icon :icon="['fas', 'plus']"
               style="font-size: 2.25rem; margin-bottom: 5px;"
             />
           </div>
