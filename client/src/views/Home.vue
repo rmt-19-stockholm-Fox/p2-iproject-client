@@ -8,13 +8,20 @@
             <div class="card-body">
               <h5 class="card-title">{{ travelPost.name }}</h5>
               <p class="card-text">{{ travelPost.summary }}</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <a href="#" class="btn btn-primary" v-on:click.prevent='goDetailPage(travelPost.id)'>Details</a>
             </div>
           </div>
         </div>
         <div class="row bg-dark">
-          2
-        </div>
+          <div class="card mx-auto m-1" style="width: 18rem;" v-for="booking in bookings" v-bind:key='booking.id'>
+            <img v-bind:src="booking.TravelPost.imageUrl" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">{{ booking.TravelPost.name }}</h5>
+              <p class="card-text">{{ booking.TravelPost.summary }}</p>
+              <a href="#" class="btn btn-primary" v-on:click.prevent='goDetailPage(booking.TravelPost.id)'>Details</a>
+            </div>
+          </div>
+      </div>
       </div>
       <div class="col-4 bg-success">
         <div id="wrapper">
@@ -41,10 +48,19 @@ export default {
   },
   created () {
     this.$store.dispatch('fetchTravels')
+    this.$store.dispatch('fetchBookings')
+  },
+  methods: {
+    goDetailPage (id) {
+      this.$router.push({ path: `/travel/${id}` })
+    }
   },
   computed: {
     travelPosts () {
       return this.$store.state.travelPosts
+    },
+    bookings () {
+      return this.$store.state.bookings
     }
   }
 }
