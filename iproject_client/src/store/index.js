@@ -6,8 +6,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    userData: {},
     registrationStatus: false,
+    userData: {},
+    diaryList: {},
   },
   mutations: {
     CHANGE_USERDATA(state, payload) {
@@ -15,6 +16,9 @@ export default new Vuex.Store({
     },
     CHANGE_REGISTRATION_STATUS(state, payload) {
       state.registrationStatus = payload;
+    },
+    CHANGE_DIARY_LIST(state, payload) {
+      state.diaryList = payload;
     },
   },
   actions: {
@@ -53,6 +57,16 @@ export default new Vuex.Store({
         context.commit("CHANGE_REGISTRATION_STATUS", true);
       } catch (err) {
         console.log(err.response.data);
+      }
+    },
+    async getDiary(context) {
+      try {
+        const diaryList = await axios.get(`http://localhost:3000/diaries`, {
+          headers: { access_token: localStorage.getItem("access_token") },
+        });
+        context.commit("CHANGE_DIARY_LIST", diaryList.data);
+      } catch (err) {
+        console.log(err.response);
       }
     },
   },
