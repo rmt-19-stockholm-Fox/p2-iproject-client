@@ -112,6 +112,15 @@ export default new Vuex.Store({
       } catch (err) {
         console.log(err);
       }
+    },
+    async deletePost(context, postId) {
+      try {
+        await axios.delete(`/posts/${postId}`, {
+          headers: { access_token: storage.accessToken.value() }
+        });
+      } catch(err) {
+        console.log(err);
+      }
     }
   },
   modules: {
