@@ -1,10 +1,10 @@
 <template>
   <div class="card">
-    <div style="width: 300px;">
+    <div class="d-flex justify-content-center align-items-center" style="width: 300px;">
       <button @click="confirmDeletePost" title="delete" class="delete-button btn btn-danger">
         X
       </button>
-      <img :src="imageUrl" style="max-width: 300px;">
+      <img :src="primaryImage" style="max-width: 300px;">
     </div>
     <div style="padding: 15px 15px 12px;">
       <div>{{ post.content }}</div>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { getDownloadURL, getStorage, listAll, ref, deleteObject } from "firebase/storage";
+import { getStorage, listAll, ref, deleteObject } from "firebase/storage";
 import Alert from '../helpers/alert';
 
 export default {
@@ -25,18 +25,14 @@ export default {
       imageUrl: ''
     }
   },
+  computed: {
+    primaryImage() {
+      return this.post.imageUrls 
+        ? this.post.imageUrls.split(';')[0]
+        : '';
+    }
+  },
   methods: {
-    async fetchImages() {
-      try {
-        const result = await listAll(ref(getStorage(), `posts/${this.post.id}`));
-        
-        if (result.items.length > 0) {
-          this.imageUrl = await getDownloadURL(result.items[0]);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    },
     async confirmDeletePost() {
       try {
         const result = await Alert.confirm({
@@ -72,9 +68,6 @@ export default {
         console.log(err);
       }
     }
-  },
-  created() {
-    this.fetchImages();
   }
 }
 </script>
