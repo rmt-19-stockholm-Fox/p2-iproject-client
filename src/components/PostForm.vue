@@ -83,7 +83,7 @@ export default {
     },
     '$store.state.createdPost'(value) {
       this.uploadPostImages(value.id)
-        .then(this.$store.dispatch('fetchPosts'))
+        .then(() => this.$store.dispatch('fetchPosts'))
         .then(() => {
           this.resetForm();
 
