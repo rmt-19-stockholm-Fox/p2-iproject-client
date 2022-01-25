@@ -1,15 +1,15 @@
 <template>
   <div>
-    <form action="" @click.prevent="loginHandler">
+    <form action="" @submit.prevent="loginHandler">
       <input type="text" placeholder="email" v-model="user.email" />
       <input type="password" placeholder="password" v-model="user.password" />
-      <button>Login</button>
+      <button type="submit">Login</button>
     </form>
   </div>
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 
 export default {
   name: "LoginPage",
@@ -22,8 +22,10 @@ export default {
     ...mapMutations({
       changeUserData: "CHANGE_USERDATA",
     }),
+    ...mapActions(["login"]),
     loginHandler() {
       this.changeUserData(this.user);
+      this.login();
     },
   },
 };
