@@ -7,8 +7,10 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     registrationStatus: false,
+    username: "",
     userData: {},
     diaryList: {},
+    userList: {},
   },
   mutations: {
     CHANGE_USERDATA(state, payload) {
@@ -19,6 +21,12 @@ export default new Vuex.Store({
     },
     CHANGE_DIARY_LIST(state, payload) {
       state.diaryList = payload;
+    },
+    CHANGE_USERNAME(state, payload) {
+      state.username = payload;
+    },
+    CHANGE_USERLIST(state, payload) {
+      state.userList = payload;
     },
   },
   actions: {
@@ -67,6 +75,20 @@ export default new Vuex.Store({
         context.commit("CHANGE_DIARY_LIST", diaryList.data);
       } catch (err) {
         console.log(err.response);
+      }
+    },
+    async searchUser(context) {
+      try {
+        const findUsername = context.state.username;
+        const findUser = await axios.get(
+          `http://localhost:3000/findUser?username=${findUsername}`,
+          {
+            headers: { access_token: localStorage.getItem("access_token") },
+          }
+        );
+        context.commit("CHANGE_USERLIST", findUser.data);
+      } catch (err) {
+        console.log(err);
       }
     },
   },
