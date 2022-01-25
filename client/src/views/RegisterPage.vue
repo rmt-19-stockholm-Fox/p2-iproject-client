@@ -1,5 +1,5 @@
 <template>
-  <section class="vh-100">
+    <section class="vh-100">
   <div class="container-fluid h-custom">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-md-9 col-lg-6 col-xl-5">
@@ -7,27 +7,27 @@
           alt="Sample image">
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-        <form v-on:submit.prevent="loginSubmit">
+        <form v-on:submit.prevent="registerSubmit">
 
           <!-- Email input -->
           <div class="form-outline mb-4">
             <input type="email" id="form3Example3" class="form-control form-control-lg"
-              placeholder="Enter a valid email address" v-model="formLogin.email"/>
+              placeholder="Enter a valid email address" v-model="formRegister.email"/>
             <label class="form-label" for="form3Example3">Email address</label>
           </div>
 
           <!-- Password input -->
           <div class="form-outline mb-3">
             <input type="password" id="form3Example4" class="form-control form-control-lg"
-              placeholder="Enter password" v-model="formLogin.password"/>
+              placeholder="Enter password" v-model="formRegister.password"/>
             <label class="form-label" for="form3Example4">Password</label>
           </div>
 
           <div class="text-center text-lg-start mt-4 pt-2">
             <button type="submit" class="btn btn-primary btn-lg"
               style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
-            <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a v-on:click.prevent='goRegisterPage' href=""
-                class="link-danger">Register</a></p>
+            <p class="small fw-bold mt-2 pt-1 mb-0">Back to Login <a v-on:click.prevent='goLoginPage' href=""
+                class="link-danger">Login</a></p>
           </div>
 
         </form>
@@ -39,37 +39,38 @@
 
 <script>
 export default {
-  name: 'LoginPage',
+  name: 'RegisterPage',
   data () {
     return {
-      formLogin: {
+      formRegister: {
         email: '',
         password: ''
       }
     }
   },
   methods: {
-    loginSubmit () {
-      this.$store.dispatch('loginSubmit', this.formLogin)
+    goLoginPage () {
+      this.$router.push({ path: '/login' })
+    },
+    registerSubmit () {
+      this.$store.dispatch('registerSubmit', this.formRegister)
         .then(data => {
-          this.formLogin.email = ''
-          this.formLogin.password = ''
+          this.formRegister.email = ''
+          this.formRegister.password = ''
           this.$swal.fire({
             icon: 'success',
-            title: 'Login Successfully',
+            title: 'Register Successfully',
             text: 'Welcome'
           })
+          this.$router.push({ path: '/login' })
         })
         .catch(err => {
           this.$swal.fire({
             icon: 'error',
-            title: 'Login Successfully',
+            title: 'Register Failed',
             text: `${err.response.data.message}`
           })
         })
-    },
-    goRegisterPage () {
-      this.$router.push({ path: '/register' })
     }
   }
 }
