@@ -8,20 +8,22 @@
 
         <button @click="addLocationMarker">Add</button>
       </label>
-      <br/>
- 
+      <br />
     </div>
-    <br>
+    <br />
     <gmap-map
-        :zoom="14"    
-        :center="center"
-        style="width:100%;  height: 600px;"
-      >
+      :zoom="16"
+      :center="center"
+      :options="options"
+      style="width: 60%; height: 800px"
+    >
       <gmap-marker
+        v-for="(loc, index) in locationMarkers"
         :key="index"
-        v-for="(m, index) in locationMarkers"
-        :position="m.position"
-        @click="center=m.position"
+        :position="loc.position"
+        :clickable="true"
+        :draggable="true"
+        @click="center = loc.position"
       ></gmap-marker>
     </gmap-map>
   </div>
@@ -29,47 +31,66 @@
  
 <script>
 export default {
-  name: "AddGoogleMap",
+  name: "GoogleMap",
   data() {
     return {
-      center: { 
-        lat: 39.7837304,
-        lng: -100.4458825
+      center: {
+        lat: -7.759722999999999,
+        lng: 110.3989719
       },
-      locationMarkers: [],
+      locationMarkers: [
+        {
+          position: {
+            lat: -7.759722999999999,
+            lng: 110.3989719,
+          },
+        },
+        {
+          position: {
+            lat: -7.76,
+            lng: 110.39898,
+          },
+        },
+      ],
+      options: {
+         fullscreenControl: false,
+      },
       locPlaces: [],
-      existingPlace: null
+      existingPlace: {},
     };
   },
- 
+
   mounted() {
     this.locateGeoLocation();
   },
- 
   methods: {
     initMarker(loc) {
+      console.log(loc)
       this.existingPlace = loc;
     },
     addLocationMarker() {
       if (this.existingPlace) {
         const marker = {
           lat: this.existingPlace.geometry.location.lat(),
-          lng: this.existingPlace.geometry.location.lng()
+          lng: this.existingPlace.geometry.location.lng(),
         };
         this.locationMarkers.push({ position: marker });
         this.locPlaces.push(this.existingPlace);
         this.center = marker;
+        console.log(this.existingPlace);
         this.existingPlace = null;
+        console.log(marker);
+        console.log(this.existingPlace);
       }
     },
-    locateGeoLocation: function() {
-      navigator.geolocation.getCurrentPosition(res => {
+    locateGeoLocation: function () {
+      navigator.geolocation.getCurrentPosition((res) => {
         this.center = {
           lat: res.coords.latitude,
-          lng: res.coords.longitude
+          lng: res.coords.longitude,
         };
       });
-    }
-  }
+    },
+  },
 };
 </script>
