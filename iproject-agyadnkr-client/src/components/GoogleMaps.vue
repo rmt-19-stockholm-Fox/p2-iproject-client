@@ -4,7 +4,7 @@
       <h2>Vue Js Search and Add Marker</h2>
 
       <label>
-        <gmap-autocomplete @place_changed="initMarker"></gmap-autocomplete>
+        <gmap-autocomplete @place_changed="initialMarker"></gmap-autocomplete>
 
         <button @click="addLocationMarker">Add</button>
       </label>
@@ -15,7 +15,7 @@
       :zoom="16"
       :center="center"
       :options="options"
-      style="width: 60%; height: 800px"
+      :style='styles'
     >
       <gmap-marker
         v-for="(loc, index) in locationMarkers"
@@ -30,66 +30,43 @@
 </template>
  
 <script>
+import { mapState, mapActions, mapMutations } from "vuex";
+
 export default {
   name: "GoogleMap",
   data() {
     return {
-      center: {
-        lat: -7.759722999999999,
-        lng: 110.3989719
-      },
-      locationMarkers: [
-        {
-          position: {
-            lat: -7.759722999999999,
-            lng: 110.3989719,
-          },
-        },
-        {
-          position: {
-            lat: -7.76,
-            lng: 110.39898,
-          },
-        },
-      ],
+      // option for google maps display
       options: {
-         fullscreenControl: false,
+        fullscreenControl: false,
       },
-      locPlaces: [],
-      existingPlace: {},
     };
   },
-
+  props: ['styles'],
+  computed: {
+    ...mapState(["center", "locationMarkers", "locPlaces", "existingPlace"]),
+    
+  },
   mounted() {
     this.locateGeoLocation();
+    this.fetchLocations();
   },
   methods: {
-    initMarker(loc) {
-      console.log(loc)
-      this.existingPlace = loc;
-    },
-    addLocationMarker() {
-      if (this.existingPlace) {
-        const marker = {
-          lat: this.existingPlace.geometry.location.lat(),
-          lng: this.existingPlace.geometry.location.lng(),
-        };
-        this.locationMarkers.push({ position: marker });
-        this.locPlaces.push(this.existingPlace);
-        this.center = marker;
-        console.log(this.existingPlace);
-        this.existingPlace = null;
-        console.log(marker);
-        console.log(this.existingPlace);
-      }
-    },
+    ...mapActions(["addLocationMarker", "initMarker", "fetchLocations"]),
+    ...mapMutations(["SET_CENTER"]),
+
+    // Set center using  google geolocation
     locateGeoLocation: function () {
       navigator.geolocation.getCurrentPosition((res) => {
-        this.center = {
+        const marker = {
           lat: res.coords.latitude,
           lng: res.coords.longitude,
         };
+        this.SET_CENTER(marker);
       });
+    },
+    initialMarker(loc) {
+      this.initMarker(loc);
     },
   },
 };

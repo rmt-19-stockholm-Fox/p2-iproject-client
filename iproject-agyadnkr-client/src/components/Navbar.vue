@@ -1,13 +1,17 @@
 <template>
   <div id="nav">
+    <div class="w-screen h-24 bg-blue-600">
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/about">About</router-link> |
+    <router-link to="/location/add">Add Location</router-link>
+    </div>
   </div>
 </template>
 
 <script>
+
 export default {
-  name: 'Navbar'
+  name: "Navbar"
 };
 </script>
 
@@ -21,7 +25,7 @@ export default {
 }
 
 #nav {
-  padding: 30px;
+  padding: 0px;
 }
 
 #nav a {
