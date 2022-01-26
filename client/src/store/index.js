@@ -41,7 +41,7 @@ export default new Vuex.Store({
     loginSubmit (context, payload) {
       return new Promise((resolve, reject) => {
         axios({
-          url: 'http://localhost:4000/login',
+          url: 'http://localhost:3000/login',
           method: 'post',
           data: {
             email: payload.email,
@@ -65,7 +65,7 @@ export default new Vuex.Store({
     registerSubmit (context, payload) {
       return new Promise((resolve, reject) => {
         axios({
-          url: 'http://localhost:4000/register',
+          url: 'http://localhost:3000/register',
           method: 'post',
           data: {
             email: payload.email,
@@ -78,9 +78,30 @@ export default new Vuex.Store({
           .catch(err => reject(err))
       })
     },
+    postTravel (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios({
+          url: 'http://localhost:3000/travel',
+          method: 'post',
+          headers: {
+            access_token: localStorage.getItem('access_token')
+          },
+          data: {
+            name: payload.name,
+            summary: payload.summary,
+            date: payload.date,
+            imageUrl: payload.imageUrl
+          }
+        })
+          .then(data => {
+            resolve(data.data)
+          })
+          .catch(err => reject(err))
+      })
+    },
     fetchTravels (context, payload) {
       axios({
-        url: 'http://localhost:4000/travel',
+        url: 'http://localhost:3000/travel',
         method: 'get',
         headers: {
           access_token: localStorage.getItem('access_token')
@@ -93,7 +114,7 @@ export default new Vuex.Store({
     },
     fetchBookings (context, payload) {
       axios({
-        url: 'http://localhost:4000/bookings',
+        url: 'http://localhost:3000/bookings',
         method: 'get',
         headers: {
           access_token: localStorage.getItem('access_token')
@@ -106,7 +127,7 @@ export default new Vuex.Store({
     },
     fetchDetailTravel (context, payload) {
       axios({
-        url: `http://localhost:4000/travel/${payload}`,
+        url: `http://localhost:3000/travel/${payload}`,
         method: 'get',
         headers: {
           access_token: localStorage.getItem('access_token')
@@ -117,37 +138,43 @@ export default new Vuex.Store({
         })
         .catch(err => console.log(err))
     },
-    bookNow (context, payload) {
+    payNow (context, payload) {
       return new Promise((resolve, reject) => {
         axios({
-          url: 'http://localhost:4000/midtrans',
+          url: 'http://localhost:3000/midtrans',
           method: 'post',
           headers: {
             access_token: localStorage.getItem('access_token')
           },
           data: {
-            amount: payload
+            postId: payload
           }
         })
           .then(data => resolve(data.data))
-          .catch(err => resolve(err))
+          .catch(err => reject(err))
       })
     },
-    bookSuccess (context, payload) {
-      axios({
-        url: `http://localhost:4000/bookings/${payload}`,
-        method: 'post',
-        headers: {
-          access_token: localStorage.getItem('access_token')
-        }
+    bookNow (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios({
+          url: `http://localhost:3000/bookings/${payload}`,
+          method: 'post',
+          headers: {
+            access_token: localStorage.getItem('access_token')
+          }
+        })
+          .then(data => {
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
       })
-        .then(data => console.log(data.data))
-        .catch(err => console.log(err))
     },
     submitEvents (context, payload) {
       return new Promise((resolve, reject) => {
         axios({
-          url: `http://localhost:4000/events/${payload.postId}`,
+          url: `http://localhost:3000/events/${payload.postId}`,
           method: 'post',
           headers: {
             access_token: localStorage.getItem('access_token')
@@ -199,7 +226,6 @@ export default new Vuex.Store({
         }
       }
       axios.request(options).then(function (response) {
-        console.log(response.data.data)
         context.commit('IS_TRAVELPLACES', response.data.data.getPlaces)
       }).catch(function (error) {
         console.error(error)

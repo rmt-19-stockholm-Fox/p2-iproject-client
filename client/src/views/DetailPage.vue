@@ -14,8 +14,10 @@ background-image: linear-gradient(0deg, #FFDEE9 0%, #B5FFFC 100%);
                   <li class="list-group-item">Total Price: {{ rupiahFormater(totalPrice) }}</li>
                   <li class="list-group-item">Description: {{ detailProduct.summary }}</li>
                   <li class="list-group-item">Date: {{ dateFormating(detailProduct.date) }}</li>
-                  <li class="list-group-item"><button v-if="!isBooked && role === 'customer'" type="button" class="btn btn-primary col-12" v-on:click="bookNow">Book Now</button></li>
-                  <li class="list-group-item"><button v-if="isBooked && role === 'customer'" type="button" class="btn btn-primary col-12" disabled>Already Booked</button></li>
+                  <li class="list-group-item" v-if="!isBooked && role === 'customer'"><button type="button" class="btn btn-primary col-12" v-on:click="bookNow">Book Now</button></li>
+                  <li class="list-group-item" v-if="isBooked && role === 'customer'"><button type="button" class="btn btn-primary col-12" disabled>Already Booked</button></li>
+                  <li class="list-group-item" v-if="!isPayed && role === 'customer'"><button type="button" class="btn btn-primary col-12" v-on:click="payNow">Pay Now</button></li>
+                  <li class="list-group-item" v-if="isPayed && role === 'customer'"><button type="button" class="btn btn-primary col-12" disabled>Already Payed</button></li>
                 </ul>
             </div>
         </div>
@@ -62,6 +64,7 @@ export default {
   data () {
     return {
       isBooked: false,
+      isPayed: false,
       isAdd: false,
       formAddEvent: {
         destination: '',
@@ -98,11 +101,35 @@ export default {
     }
   },
   methods: {
-    bookNow () {
-      this.$store.dispatch('bookNow', this.totalPrice)
+    payNow () {
+      this.$store.dispatch('payNow', this.$route.params.id)
         .then(data => {
           window.snap.pay(data.token)
-          this.$store.dispatch('bookSuccess', this.$route.params.id)
+          this.$store.dispatch('successPayment', data.bookingId)
+        })
+        .catch(err => {
+          this.$swal.fire({
+            icon: 'error',
+            title: 'Payment Failed',
+            text: `${err.response.data.message}`
+          })
+        })
+    },
+    bookNow () {
+      this.$store.dispatch('bookNow', this.$route.params.id)
+        .then(data => {
+          this.$swal.fire({
+            icon: 'success',
+            title: 'Booked success'
+          })
+          this.$router.push({ path: '/' })
+        })
+        .catch(err => {
+          this.$swal.fire({
+            icon: 'error',
+            title: 'Book Failed',
+            text: `${err}`
+          })
         })
     },
     rupiahFormater (price) {
@@ -115,12 +142,23 @@ export default {
       const payload = { formAddEvent: this.formAddEvent, postId: this.$route.params.id }
       this.$store.dispatch('submitEvents', payload)
         .then(data => {
+          this.$swal.fire({
+            icon: 'success',
+            title: 'Success add event'
+          })
           this.isAdd = false
           this.formAddEvent.destination = ''
           this.formAddEvent.imageUrl = ''
           this.formAddEvent.schedule = ''
           this.formAddEvent.price = ''
           this.$store.dispatch('fetchDetailTravel', this.$route.params.id)
+        })
+        .catch(err => {
+          this.$swal.fire({
+            icon: 'error',
+            title: 'Book Failed',
+            text: `${err.message}`
+          })
         })
     },
     dateFormating (input) {
@@ -131,9 +169,12 @@ export default {
       return `${day}-${month + 1}-${year}`
     },
     checkBooked () {
-      if (this.bookings === undefined) {
+      if (this.bookings !== undefined) {
         this.bookings.forEach(e => {
-          if (e.postId === +this.$route.params.id) this.isBooked = true
+          if (e.postId === +this.$route.params.id) {
+            this.isBooked = true
+            if (e.paymentStatus) this.isPayed = true
+          }
         })
       }
     }

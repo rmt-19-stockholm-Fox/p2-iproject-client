@@ -64,11 +64,10 @@ export default {
           })
         })
         .catch(err => {
-          console.log(err)
           this.$swal.fire({
             icon: 'error',
             title: 'Login Failed',
-            text: `${err}`
+            text: `${err.response.data.message}`
           })
         })
     },

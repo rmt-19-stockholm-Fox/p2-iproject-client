@@ -1,5 +1,5 @@
 <template>
-<div class="section p-2 vh-100" style='background-color: #FFDEE9;
+<div class="section p-2 vh-80" style='background-color: #FFDEE9;
         background-image: linear-gradient(0deg, #FFDEE9 0%, #B5FFFC 100%);
         '>
     <div class="row">
@@ -34,8 +34,7 @@
       '>
         <div id="wrapper">
             <div id="menu">
-                <p class="welcome">Welcome, <b></b></p>
-                <p class="logout"><a id="exit" href="#">Exit Chat</a></p>
+                <p class="welcome">Welcome, {{ email }} <b></b></p>
             </div>
             <div id="chatbox">
               <div v-for="chat in chats" v-bind:key="chat.id">
@@ -126,17 +125,9 @@ export default {
     margin: 0 auto;
     padding-bottom: 25px;
     background: #eee;
-    width: 600px;
     max-width: 100%;
     border: 2px solid #212121;
     border-radius: 4px;
-  }#loginform {
-    padding-top: 18px;
-    text-align: center;
-  }#loginform p {
-    padding: 15px 25px;
-    font-size: 1.4rem;
-    font-weight: bold;
   }
   #chatbox {
     text-align: left;
@@ -144,8 +135,8 @@ export default {
     margin-bottom: 25px;
     padding: 10px;
     background: #fff;
-    height: 300px;
-    width: 530px;
+    height: 800px;
+    width: 95%;
     border: 1px solid #a7a7a7;
     overflow: auto;
     border-radius: 4px;
@@ -169,9 +160,6 @@ export default {
     padding: 4px 10px;
     font-weight: bold;
     border-radius: 4px;
-  }
-  .error {
-    color: #ff0000;
   }
   #menu {
     padding: 15px 25px;

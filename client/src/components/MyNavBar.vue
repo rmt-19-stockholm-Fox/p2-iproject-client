@@ -9,6 +9,9 @@
         <router-link class="nav-link active" to="/login">Login</router-link>
       </li>
       <li class="nav-item">
+        <router-link class="nav-link active" to="/travelpost" v-if="role === 'admin'">PostTravel</router-link>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="" v-on:click.prevent='logoutClick'>Logout</a>
       </li>
       <li class="nav-item">
@@ -26,6 +29,11 @@ export default {
     logoutClick () {
       localStorage.clear()
       this.$router.push({ path: '/login' })
+    }
+  },
+  computed: {
+    role () {
+      return this.$store.state.role
     }
   }
 }
