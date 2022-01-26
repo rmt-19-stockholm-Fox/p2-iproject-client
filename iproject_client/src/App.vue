@@ -4,6 +4,19 @@
   </div>
 </template>
 
+<script>
+import { mapActions } from "vuex";
+export default {
+  name: "App",
+  methods: {
+    ...mapActions(["sendCustomEventToServer"]),
+  },
+  created() {
+    this.sendCustomEventToServer({ messages: "Halo from client" });
+  },
+};
+</script>
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

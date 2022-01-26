@@ -9,6 +9,8 @@
     <div>{{ diaryList }}</div>
     <br /><br />
     <div>{{ userList }}</div>
+    <br />
+    <button @click="chatButtonHandler">chat</button>
   </div>
 </template>
 
@@ -19,19 +21,24 @@ export default {
   data() {
     return {
       username: "",
+      usernameToServer: localStorage.getItem("userName"),
     };
   },
   computed: {
     ...mapState(["diaryList", "userList"]),
   },
   methods: {
-    ...mapActions(["getDiary", "searchUser"]),
+    ...mapActions(["getDiary", "searchUser", "setUsername"]),
     ...mapMutations({
       changeUsername: "CHANGE_USERNAME",
     }),
     findUser() {
       this.changeUsername(this.username);
       this.searchUser();
+    },
+    chatButtonHandler() {
+      this.setUsername(this.usernameToServer);
+      this.$router.push("/chatpage");
     },
   },
   created() {

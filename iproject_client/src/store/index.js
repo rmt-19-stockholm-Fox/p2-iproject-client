@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     registrationStatus: false,
     username: "",
+    chats: [],
     userData: {},
     diaryList: {},
     userList: {},
@@ -28,8 +29,38 @@ export default new Vuex.Store({
     CHANGE_USERLIST(state, payload) {
       state.userList = payload;
     },
+    SOCKET_RECEIVEMESSAGEFROMSERVER(state, payload) {
+      state.chats = payload;
+    },
   },
   actions: {
+    socket_connect() {
+      console.log("connected", this._vm.$socket);
+    },
+    socket_disconnect() {
+      console.log("disconnected", this._vm.$socket);
+    },
+    socket_customEventFromServer(_, payload) {
+      console.log("customEventFromServer", payload);
+    },
+    sendCustomEventToServer(_, payload) {
+      this._vm.$socket.client.emit("customEventFromClient", payload);
+    },
+    async setUsername({ commit }, payload) {
+      commit("CHANGE_USERNAME", payload);
+      await this._vm.$socket.client.emit("setUsername", payload);
+    },
+    async sendMessage(_, payload) {
+      let messsages = "";
+      if (payload !== "") {
+        messsages += payload;
+      }
+      await this._vm.$socket.client.emit("sendMessageToServer", {
+        user: localStorage.getItem("userName"),
+        message: messsages,
+      });
+      console.log(messsages, ">>>>>>>>>>>");
+    },
     async login(context) {
       try {
         const userData = context.state.userData;
@@ -43,6 +74,7 @@ export default new Vuex.Store({
         });
         localStorage.setItem("access_token", login.data.access_token);
         localStorage.setItem("userId", login.data.userId);
+        localStorage.setItem("userName", login.data.userName);
       } catch (err) {
         console.log(err.response);
       }
