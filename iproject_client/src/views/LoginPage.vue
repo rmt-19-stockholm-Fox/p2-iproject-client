@@ -50,6 +50,7 @@ export default {
     return {
       user: {},
       token: localStorage.getItem("access_token"),
+      username: localStorage.getItem("userName"),
     };
   },
   methods: {

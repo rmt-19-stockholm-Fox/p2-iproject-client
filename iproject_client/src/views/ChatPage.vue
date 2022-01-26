@@ -2,50 +2,44 @@
   <body>
     <div style="overscroll-behavior: none">
       <div
-        class="fixed w-full bg-green-400 h-16 pt-2 text-white flex justify-between shadow-md"
+        class="fixed w-full bg-blue-300 h-16 pt-2 text-white flex justify-between shadow-md"
         style="top: 0px; overscroll-behavior: none"
       >
-        <!-- back button -->
         <router-link to="/">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            class="w-12 h-12 my-1 text-green-100 ml-2"
+            class="w-12 h-12 my-1 text-blue-100 ml-2"
           >
             <path
-              class="text-green-100 fill-current"
+              class="text-blue-100 fill-current"
               d="M9.41 11H17a1 1 0 0 1 0 2H9.41l2.3 2.3a1 1 0 1 1-1.42 1.4l-4-4a1 1 0 0 1 0-1.4l4-4a1 1 0 0 1 1.42 1.4L9.4 11z"
             />
           </svg>
         </router-link>
-        <div class="my-3 text-green-100 font-bold text-lg tracking-wide">
+        <div class="my-3 text-slate-100 font-bold text-lg tracking-wide">
           {{ username }}
         </div>
-        <!-- 3 dots -->
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           class="icon-dots-vertical w-8 h-8 mt-2 mr-2"
         >
           <path
-            class="text-green-100 fill-current"
+            class="text-blue-100 fill-current"
             fill-rule="evenodd"
             d="M12 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
           />
         </svg>
       </div>
 
-      <div
-        class="mt-20 mb-16"
-        v-for="(chat, id) in chats"
-        :key="chat.user + id"
-      >
+      <div class="mt-20 mb-16" v-for="chat in chats" :key="chat.id">
         <div class="clearfix">
           <div
             class="bg-gray-300 w-3/4 mx-4 my-2 p-2 rounded-lg"
             :class="[
-              chat.user === username
-                ? 'bg-green-300 float-left'
+              chat.username === username
+                ? 'bg-blue-300 float-left'
                 : 'bg-gray-300 float-right  ',
             ]"
           >
@@ -56,7 +50,7 @@
     </div>
 
     <div
-      class="fixed w-full flex justify-between bg-green-100"
+      class="fixed w-full flex justify-between bg-blue-100"
       style="bottom: 0px"
     >
       <textarea
@@ -68,7 +62,7 @@
       ></textarea>
       <button class="m-2" style="outline: none" @click="sendMessageHandler">
         <svg
-          class="svg-inline--fa text-green-400 fa-paper-plane fa-w-16 w-12 h-12 py-2 mr-2"
+          class="svg-inline--fa text-blue-400 fa-paper-plane fa-w-16 w-12 h-12 py-2 mr-2"
           aria-hidden="true"
           focusable="false"
           data-prefix="fas"
@@ -101,18 +95,14 @@ export default {
     ...mapState(["chats"]),
   },
   methods: {
-    ...mapActions(["sendMessage"]),
+    ...mapActions(["sendMessage", "getChat"]),
     sendMessageHandler() {
       this.sendMessage(this.chatMessage);
       this.chatMessage = "";
     },
   },
   created() {
-    //fetch message yang adda untuk ditampilin ====
-    //pada saat usr menekan submit di bagian input, maka akan ngesend msgny
-    if (this.chatMessage.length !== 0) {
-      this.sendMessage(this.chatMessage);
-    }
+    this.getChat();
   },
 };
 </script>

@@ -26,6 +26,9 @@ export default new Vuex.Store({
     GET_FRIENDLIST(state, payload) {
       state.friendList = payload;
     },
+    GET_CHATS(state, payload) {
+      state.chats = payload;
+    },
     CHANGE_USERDATA(state, payload) {
       state.userData = payload;
     },
@@ -54,6 +57,7 @@ export default new Vuex.Store({
       state.diaryId = payload;
     },
     SOCKET_RECEIVEMESSAGEFROMSERVER(state, payload) {
+      console.log(payload);
       state.chats = payload;
     },
   },
@@ -70,20 +74,16 @@ export default new Vuex.Store({
     sendCustomEventToServer(_, payload) {
       this._vm.$socket.client.emit("customEventFromClient", payload);
     },
-    async setUsername({ commit }, payload) {
+    setUsername({ commit }, payload) {
       commit("CHANGE_USERNAME", payload);
-      await this._vm.$socket.client.emit("setUsername", payload);
+      this._vm.$socket.client.emit("setUsername", payload);
     },
-    async sendMessage(_, payload) {
-      let messsages = "";
-      if (payload !== "") {
-        messsages += payload;
-      }
-      await this._vm.$socket.client.emit("sendMessageToServer", {
+    sendMessage(_, payload) {
+      this._vm.$socket.client.emit("sendMessageToServer", {
         user: localStorage.getItem("userName"),
-        message: messsages,
+        UserId: localStorage.getItem("userId"),
+        message: payload,
       });
-      console.log(messsages, ">>>>>>>>>>>");
     },
     async login(context) {
       try {
@@ -219,6 +219,16 @@ export default new Vuex.Store({
           headers: { access_token: localStorage.getItem("access_token") },
         });
         context.commit("GET_FRIENDLIST", mutualList.data);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getChat(context) {
+      try {
+        const fetchChat = await axios.get("http://localhost:3000/getChats", {
+          headers: { access_token: localStorage.getItem("access_token") },
+        });
+        context.commit("GET_CHATS", fetchChat.data);
       } catch (err) {
         console.log(err);
       }
