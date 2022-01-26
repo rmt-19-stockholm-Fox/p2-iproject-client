@@ -1,18 +1,16 @@
 <template>
   <div>
-    <navbar></navbar>
     <div
       class="bg-gradient-to-b from-sky-400 to-sky-200bg-gradient-to-b from-sky-400 to-sky-200 min-h-screen"
     >
+      <navbar></navbar>
       <div>
-        <form action="" @submit.prevent="findUser">
-          <input
-            type="search"
-            placeholder="Search user ..."
-            v-model="username"
-          />
-          <button type="submit">search</button>
-        </form>
+        <input
+          type="search"
+          placeholder="Search title ..."
+          v-model="title"
+          @keyup.enter="searchTitle"
+        />
       </div>
       <div>{{ diaryList }}</div>
       <br /><br />
@@ -30,7 +28,7 @@ export default {
   name: "HomePage",
   data() {
     return {
-      username: "",
+      title: "",
       usernameToServer: localStorage.getItem("userName"),
     };
   },
@@ -43,11 +41,11 @@ export default {
   methods: {
     ...mapActions(["getDiary", "searchUser", "setUsername"]),
     ...mapMutations({
-      changeUsername: "CHANGE_USERNAME",
+      changeTitle: "CHANGE_TITLE",
     }),
-    findUser() {
-      this.changeUsername(this.username);
-      this.searchUser();
+    searchTitle() {
+      this.changeTitle(this.title);
+      this.getDiary();
     },
     chatButtonHandler() {
       this.setUsername(this.usernameToServer);

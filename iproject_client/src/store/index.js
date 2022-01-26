@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     registrationStatus: false,
     username: "",
+    title: "",
     chats: [],
     userData: {},
     diaryList: {},
@@ -28,6 +29,9 @@ export default new Vuex.Store({
     },
     CHANGE_USERLIST(state, payload) {
       state.userList = payload;
+    },
+    CHANGE_TITLE(state, payload) {
+      state.title = payload;
     },
     SOCKET_RECEIVEMESSAGEFROMSERVER(state, payload) {
       state.chats = payload;
@@ -101,7 +105,11 @@ export default new Vuex.Store({
     },
     async getDiary(context) {
       try {
-        const diaryList = await axios.get(`http://localhost:3000/diaries`, {
+        let baseUrl = "http://localhost:3000/diaries";
+        if (context.state.title) {
+          baseUrl = `http://localhost:3000/diaries?title=${context.state.title}`;
+        }
+        const diaryList = await axios.get(baseUrl, {
           headers: { access_token: localStorage.getItem("access_token") },
         });
         context.commit("CHANGE_DIARY_LIST", diaryList.data);
@@ -118,7 +126,6 @@ export default new Vuex.Store({
             headers: { access_token: localStorage.getItem("access_token") },
           }
         );
-        console.log("masuk", findUser);
         context.commit("CHANGE_USERLIST", findUser.data);
       } catch (err) {
         console.log(err);
