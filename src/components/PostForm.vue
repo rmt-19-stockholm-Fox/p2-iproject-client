@@ -66,6 +66,7 @@ export default {
       postImages: [],
       location: '',
       selectedPlace: null,
+      selectedPlaceId: '',
       isTypingLocation: false
     };
   },
@@ -118,18 +119,25 @@ export default {
     },
     location(value) {
       this.$store.dispatch('searchPlaces', value);
+      // this.selectedPlaceId = '';
+      // this.selectedPlace = null;
     }
   },
   methods: {
     pickPlace(place) {
       this.location = place.name;
+      this.selectedPlaceId = place.id;
       this.selectedPlace = place;
     },
     async createPost() {
       try {
         await this.$store.dispatch('createPost', {
           content: this.postContent,
-          images: [ ...this.postImages ]
+          images: [ ...this.postImages ],
+          placeName: this.location,
+          placeId: this.location == this.selectedPlace.name
+            ? this.selectedPlaceId
+            : ''
         });
       } catch (err) {
         console.log(err);
@@ -181,6 +189,7 @@ export default {
       this.selectedPostImage = null;
       this.selectedImageNum = 1;
       this.postImages = [];
+      this.location = '';
 
       const newImageBox = this.ELEMENT_IMAGE_BOX.cloneNode(true);
       newImageBox.setAttribute('id', `image-box-${1}`);

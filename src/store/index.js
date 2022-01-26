@@ -98,7 +98,9 @@ export default new Vuex.Store({
         const formData = new FormData();
         formData.append('content', post.content);
         post.images.forEach(image => formData.append('images', image));
-
+        formData.append('place_name', post.placeName);
+        formData.append('place_id', post.placeId);
+        
         const { data } = await axios.post('/posts', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
