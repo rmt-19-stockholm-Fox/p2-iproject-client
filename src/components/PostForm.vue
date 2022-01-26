@@ -1,6 +1,22 @@
 <template>
   <form @submit.prevent="createPost" class="text-left mb-5">
     <div class="form-group">
+      <DelayedInput
+        v-model="location" :delay="550"
+        class="form-control" placeholder="location..." autocomplete="off"
+        @blur="isTypingLocation = false"
+        @focus="isTypingLocation = true"
+      />
+      <div style="width: 100%; position: relative;">
+        <div v-show="isTypingLocation" class="place-suggestions">
+          <PlaceSuggestion v-for="place in slicedPlaces" :key="place.place_id" 
+            :place="place"
+            @click="pickPlace"
+          ></PlaceSuggestion>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
       <textarea
         v-model="postContent"
         class="form-control"
@@ -35,15 +51,31 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import DelayedInput from './DelayedInput.vue';
+import PlaceSuggestion from './PlaceSuggestion.vue';
+
 export default {
   name: "PostForm",
+  components: { DelayedInput, PlaceSuggestion },
   data() {
     return {
       postContent: "",
       selectedPostImage: null,
       selectedImageNum: 1,
-      postImages: []
+      postImages: [],
+      location: '',
+      selectedPlace: null,
+      isTypingLocation: false
     };
+  },
+  computed: {
+    ...mapState(['places']),
+    slicedPlaces() {
+      return this.places.length > 5
+        ? this.places.slice(0, 5)
+        : this.places;
+    }
   },
   watch: {
     selectedPostImage(value) {
@@ -83,9 +115,16 @@ export default {
       this.$store.dispatch('fetchPosts')
         .then(() => Promise.resolve(this.resetForm()))
         .catch(console.log);
+    },
+    location(value) {
+      this.$store.dispatch('searchPlaces', value);
     }
   },
   methods: {
+    pickPlace(place) {
+      this.location = place.name;
+      this.selectedPlace = place;
+    },
     async createPost() {
       try {
         await this.$store.dispatch('createPost', {
@@ -138,8 +177,6 @@ export default {
       this.$store.commit('IMAGE_PREVIEW_OUT');
     },
     resetForm() {
-      console.log('reset');
-
       this.postContent = '';
       this.selectedPostImage = null;
       this.selectedImageNum = 1;
@@ -162,6 +199,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.place-suggestions {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  border-radius: 0 0 7px 7px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
 .image-box {
   position: relative;
   margin: 4px;
