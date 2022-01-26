@@ -82,11 +82,6 @@ export default {
       return this.$store.state.user && this.$route.params.id == this.$store.state.user.id;
     }
   },
-  methods: {
-    handleClick() {
-      this.isClicked = !this.isClicked;
-    }
-  },
   async beforeCreate() {
     try {
       this.$store.commit('RESET_PROFILE');

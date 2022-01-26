@@ -13,7 +13,8 @@ export default {
     this.$gAuth.signOut();
     storage.accessToken.clear();
     this.$store.commit('LOG_OUT');
-    this.$router.push('/login');
+    this.$router.push('/');
+    
   }
 }
 </script>

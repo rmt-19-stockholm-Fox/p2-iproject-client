@@ -19,8 +19,10 @@
         </button>
       </div>
       <div class="place-name">
-        <font-awesome-icon :icon="['fas', 'map-marker-alt']" />
-        {{ post.placeName }}
+        <span @click="$router.push(`/place/${post.placeId}`)">
+          <font-awesome-icon :icon="['fas', 'map-marker-alt']" style="margin-right: 5px;"/>
+          {{ post.placeName }}
+        </span>
       </div>
       <img v-if="displayedImage && isLoadingImage" src="../assets/images/loading.gif" style="max-width: 300px;" />
       <img :src="displayedImage" @load="isLoadingImage = false"
@@ -64,7 +66,8 @@ export default {
         : []
     },
     isAllowedToModify() {
-      return this.$route.params.id == this.$store.state.user.id;
+      return this.$store.user && 
+        this.$route.params.id == this.$store.state.user.id;
     }
   },
   methods: {
@@ -120,7 +123,16 @@ export default {
     background-image: linear-gradient(rgba(0, 0, 0, 0.77), rgb(0, 0, 0, 0));
     color: #eee;
     font-size: 0.9rem;
-    font-weight: bold; 
+    font-weight: bold;
+    z-index: 299;
+
+    span {
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
   .user-name {
