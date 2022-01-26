@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <div class="row mb-4">
+      <div class="row mt-3 mb-4">
         <div class="col d-flex justify-content-end">
           <img id="profile-picture" :src="userPicture">
         </div>
@@ -70,11 +70,7 @@ export default {
   },
   computed: {
     userPicture() {
-      const user = this.$store.state.user;
-
-      return user && user.pictureUrl
-        ? user.pictureUrl
-        : '';
+      return this.$store.state.avatarUrl;
     },
     userEmail() {
       return this.$store.state.user 
@@ -103,9 +99,14 @@ hr {
   background-color: #eee;
 }
 
+h5 {
+  font-size: 1.1rem;
+  color: #555;
+}
+
 #profile-picture {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
 }
 

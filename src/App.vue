@@ -34,6 +34,7 @@ export default {
     }
   },
   beforeCreate() {
+    this.$store.dispatch('fetchAvatarUrl');
     const accessToken = storage.accessToken.value();
 
     if (accessToken) {

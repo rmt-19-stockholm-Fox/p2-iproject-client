@@ -18,7 +18,8 @@ export default new Vuex.Store({
       onChange: null,
       onDiscard: null
     },
-    places: []
+    places: [],
+    avatarUrl: ''
   },
   getters: {
     isLoggedIn(state) {
@@ -56,6 +57,9 @@ export default new Vuex.Store({
     },
     SET_PLACES(state, places) {
       state.places = places;
+    },
+    SET_AVATAR_URL(state, avatarUrl) {
+      state.avatarUrl = avatarUrl;
     }
   },
   actions: {
@@ -82,12 +86,12 @@ export default new Vuex.Store({
         console.log(err);
       }
     },
-    async fetchDefaultProfilePicture(context) {
+    async fetchAvatarUrl(context) {
       try {
         const url = await getDownloadURL(ref(getStorage(), 'avatar-1.jpg'));
 
         if (url) {
-          context.commit('SET_PROFILE_PICTURE', url);
+          context.commit('SET_AVATAR_URL', url);
         }
       } catch (err) {
         console.log(err);
