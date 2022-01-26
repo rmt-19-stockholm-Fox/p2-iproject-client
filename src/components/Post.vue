@@ -79,7 +79,7 @@ export default {
     async deletePost() {
       try {
         await this.$store.dispatch('deletePost', this.post.id);
-        this.$store.dispatch('fetchPosts');
+        this.$store.dispatch('fetchPosts', { userId: this.$route.params.id });
       } catch(err) {
         console.log(err);
       }

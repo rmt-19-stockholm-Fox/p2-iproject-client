@@ -38,7 +38,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('fetchPosts');
+    this.$store.dispatch('fetchPosts', { userId: this.$route.params.id });
   }
 }
 </script>

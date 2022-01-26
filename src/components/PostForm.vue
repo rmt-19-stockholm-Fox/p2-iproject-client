@@ -113,7 +113,7 @@ export default {
       }
     },
     '$store.state.createdPost'() {
-      this.$store.dispatch('fetchPosts')
+      this.$store.dispatch('fetchPosts', { userId: this.$route.params.id })
         .then(() => Promise.resolve(this.resetForm()))
         .catch(console.log);
     },
