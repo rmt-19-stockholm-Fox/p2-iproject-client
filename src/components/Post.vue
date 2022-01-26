@@ -1,7 +1,9 @@
 <template>
   <div class="card">
     <div class="d-flex justify-content-center align-items-center" style="width: 300px; position: relative; min-height: 70px;">
-      <button @click="confirmDeletePost" title="delete" class="delete-button btn btn-danger">
+      <button v-if="isAllowedToModify" 
+        @click="confirmDeletePost"  
+        title="delete" class="delete-button btn btn-danger">
         X
       </button>
       <div class="images-control btn">
@@ -54,6 +56,9 @@ export default {
       return this.post.imageUrls
         ? this.post.imageUrls.split(';')
         : []
+    },
+    isAllowedToModify() {
+      return this.$route.params.id == this.$store.state.user.id;
     }
   },
   methods: {

@@ -119,8 +119,6 @@ export default {
     },
     location(value) {
       this.$store.dispatch('searchPlaces', value);
-      // this.selectedPlaceId = '';
-      // this.selectedPlace = null;
     }
   },
   methods: {
@@ -131,13 +129,15 @@ export default {
     },
     async createPost() {
       try {
+        const placeId = this.selectedPlace
+          ? this.location == this.selectedPlace.name ? this.selectedPlaceId : ''
+          : '';
+
         await this.$store.dispatch('createPost', {
           content: this.postContent,
           images: [ ...this.postImages ],
           placeName: this.location,
-          placeId: this.location == this.selectedPlace.name
-            ? this.selectedPlaceId
-            : ''
+          placeId
         });
       } catch (err) {
         console.log(err);

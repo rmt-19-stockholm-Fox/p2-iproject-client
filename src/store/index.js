@@ -18,7 +18,9 @@ export default new Vuex.Store({
       onChange: null,
       onDiscard: null
     },
-    places: []
+    places: [],
+    avatarUrl: '',
+    profile: {}
   },
   getters: {
     isLoggedIn(state) {
@@ -31,12 +33,6 @@ export default new Vuex.Store({
     },
     LOG_OUT(state) {
       state.user = null;
-    },
-    SET_PROFILE_PICTURE(state, pictureUrl) {
-      state.user = {
-        ...state.user,
-        pictureUrl
-      }
     },
     SET_POSTS(state, posts) {
       state.posts = posts;
@@ -56,6 +52,15 @@ export default new Vuex.Store({
     },
     SET_PLACES(state, places) {
       state.places = places;
+    },
+    SET_AVATAR_URL(state, avatarUrl) {
+      state.avatarUrl = avatarUrl;
+    },
+    SET_PROFILE(state, profile) {
+      state.profile = profile;
+    },
+    RESET_PROFILE(state) {
+      state.profile = {};
     }
   },
   actions: {
@@ -82,12 +87,12 @@ export default new Vuex.Store({
         console.log(err);
       }
     },
-    async fetchDefaultProfilePicture(context) {
+    async fetchAvatarUrl(context) {
       try {
         const url = await getDownloadURL(ref(getStorage(), 'avatar-1.jpg'));
 
         if (url) {
-          context.commit('SET_PROFILE_PICTURE', url);
+          context.commit('SET_AVATAR_URL', url);
         }
       } catch (err) {
         console.log(err);
@@ -141,6 +146,15 @@ export default new Vuex.Store({
         });
 
         context.commit('SET_PLACES', data);
+      } catch(err) {
+        console.log(err);
+      }
+    },
+    async fetchProfile(context, userId) {
+      try {
+        const { data } = await axios.get(`/users/${userId}`);
+
+        context.commit('SET_PROFILE', data);
       } catch(err) {
         console.log(err);
       }

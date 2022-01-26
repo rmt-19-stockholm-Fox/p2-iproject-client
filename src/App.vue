@@ -1,9 +1,18 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link>
-      <router-link v-if="!$store.getters.isLoggedIn" to="/login">Login</router-link>
-      <router-link v-if="$store.getters.isLoggedIn" to="/logout">Logout</router-link>
+      <router-link to="/">
+        Home
+      </router-link>
+      <router-link v-if="$store.getters.isLoggedIn" :to="{ path: `/profile/${$store.state.user.id}`}">
+        Profile
+      </router-link>
+      <router-link v-if="!$store.getters.isLoggedIn" to="/login">
+        Login
+      </router-link>
+      <router-link v-if="$store.getters.isLoggedIn" to="/logout">
+        Logout
+      </router-link>
     </div>
     <router-view/>
     <ImagePreview></ImagePreview>
@@ -25,6 +34,7 @@ export default {
     }
   },
   beforeCreate() {
+    this.$store.dispatch('fetchAvatarUrl');
     const accessToken = storage.accessToken.value();
 
     if (accessToken) {
