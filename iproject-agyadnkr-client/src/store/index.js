@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from 'axios';
+import router from '../router/index';
 
 Vue.use(Vuex);
 
@@ -12,24 +13,15 @@ export default new Vuex.Store({
       lat: -7.759722999999999,
       lng: 110.3989719
     },
-    locationMarkers: [
-      // {
-      //   position: {
-      //     lat: -7.759722999999999,
-      //     lng: 110.3989719,
-      //   },
-      // },
-      // {
-      //   position: {
-      //     lat: -7.76,
-      //     lng: 110.39898,
-      //   },
-      // },
-    ],
+    allLocation: [],
+    locationMarkers: [],
     locPlaces: [],
     existingPlace: {},
   },
   mutations: {
+    ADD_ALL_LOCATION(state, payload) {
+      state.allLocation = payload;
+    },
     ADD_LOCATION_MARKER(state, payload) {
       state.locationMarkers.push({ position: payload })
     },
@@ -42,14 +34,19 @@ export default new Vuex.Store({
     SET_EXISTINGPLACE(state, payload) {
       state.existingPlace = payload;
     },
+    SET_PRICE(state, payload) {
+      state.existingPlace.price = payload;
+    }
   },
   actions: {
     //add location marker based on longitude and lattitude
     async addLocationMarker({ state, commit, dispatch }) {
       try {
-        console.log(state.existingPlace, '>>>> Existing places')
+        // console.log(state.existingPlace, '>>>> Existing places')
+        // console.log(state.price)
 
         if (state.existingPlace) {
+          // console.log('Masukkk')
           const marker = {
             lat: state.existingPlace.geometry.location.lat(),
             lng: state.existingPlace.geometry.location.lng(),
@@ -70,10 +67,13 @@ export default new Vuex.Store({
           // console.log(payload, '>>>>> payload')
           const result = await axios.post(`${ORIGIN}/locations`, payload)
           console.log(result);
+          console.log(state.locationMarkers)
           // console.log(state.locPlaces)
           // console.log(marker);
-          dispatch('fetchLocations')
-          commit('SET_EXISTINGPLACE', null)
+          dispatch('fetchLocations');
+          commit('SET_EXISTINGPLACE', {});
+          router.push({ name: 'Home' })
+
         }
       } catch (error) {
         console.log(error.response)
@@ -84,7 +84,9 @@ export default new Vuex.Store({
     //to set existing place
     initMarker({ commit }, loc) {
       // console.log(loc, '>>>>>>>');
+      // console.log('Di Store')
       commit('SET_EXISTINGPLACE', loc);
+      // console.log(state.existingPlace)
     },
 
     //Fetch locations from database
@@ -92,7 +94,7 @@ export default new Vuex.Store({
       try {
         const result = await axios.get(`${ORIGIN}/locations`);
 
-        console.log(result.data)
+        // console.log(result.data)
         result.data.forEach(el => {
           const markers = {
             lat: +el.lattitude,
@@ -100,6 +102,7 @@ export default new Vuex.Store({
           }
 
           commit('ADD_LOCATION_MARKER', markers)
+          commit('ADD_ALL_LOCATION', result)
         })
       } catch (error) {
         console.log(error.response.data)

@@ -1,21 +1,10 @@
 <template>
-  <div>
-    <div>
-      <h2>Vue Js Search and Add Marker</h2>
-
-      <label>
-        <gmap-autocomplete @place_changed="initialMarker"></gmap-autocomplete>
-
-        <button @click="addLocationMarker">Add</button>
-      </label>
-      <br />
-    </div>
-    <br />
+  <div class="w-full h-screen">
     <gmap-map
       :zoom="16"
       :center="center"
       :options="options"
-      :style='styles'
+      style="width: 100%; height: 100%"
     >
       <gmap-marker
         v-for="(loc, index) in locationMarkers"
@@ -42,7 +31,6 @@ export default {
       },
     };
   },
-  props: ['styles'],
   computed: {
     ...mapState(["center", "locationMarkers", "locPlaces", "existingPlace"]),
     
@@ -66,6 +54,7 @@ export default {
       });
     },
     initialMarker(loc) {
+      // console.log(loc, 'Di Viewss')
       this.initMarker(loc);
     },
   },
