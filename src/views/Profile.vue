@@ -17,7 +17,7 @@
       </div>
       <div class="row mt-3">
         <div class="col" style="margin-bottom: 80px;">
-          <PostsList></PostsList>
+          <PostsList :params="{ userId: $route.params.id, excludeUser: true }"></PostsList>
         </div>
       </div>
     </div>

@@ -28,6 +28,12 @@
       />
     </div>
     <div style="padding: 15px 15px 12px;">
+      <div v-if="post.User"
+        title="visit profile" class="user-name">
+        <span @click="$router.push(`/profile/${post.User.id}`)">
+          {{ post.User ? post.User.name : '' }}
+        </span>
+      </div>
       <div>{{ post.content }}</div>
       <div class="date">{{ new Date(post.createdAt).toLocaleString() }}</div>
     </div>
@@ -114,8 +120,21 @@ export default {
     background-image: linear-gradient(rgba(0, 0, 0, 0.77), rgb(0, 0, 0, 0));
     color: #eee;
     font-size: 0.9rem;
+    font-weight: bold; 
+  }
+
+  .user-name {
     font-weight: bold;
-    
+    font-size: 0.9rem;
+    margin-bottom: 7px;
+
+    span {
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
   .date {
