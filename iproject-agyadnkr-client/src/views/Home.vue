@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <GoogleMaps />
+    <GoogleMaps
+    :styles='"width: 75%; height: 800px"' />
   </div>
 </template>
 
