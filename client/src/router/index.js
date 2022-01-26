@@ -66,4 +66,29 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to,from,next)=>{
+  if(to.path === '/login' && localStorage.access_token) {
+    next('/')
+  } else if (to.path === '/user/register' && localStorage.access_token) {
+    next('/')
+  } else if (to.path === '/' && !localStorage.access_token) {
+    next({name:'Login'})
+  } else if (to.path === '/shop/register' && !localStorage.access_token) {
+    next({name:'Login'})
+  } else if (to.path === '/shop/edit' && !localStorage.access_token) {
+    next({name:'Login'})
+  } else if (to.path === '/product' && !localStorage.access_token) {
+    next({name:'Login'})
+  } else if (to.path === '/product/add' && !localStorage.access_token) {
+    next({name:'Login'})
+  } else if (to.path === '/product/edit/:productId' && !localStorage.access_token) {
+    next({name:'Login'})
+  } else if (to.path === '/product/edit/:productId' && !localStorage.access_token) {
+    next({name:'Login'})
+  } else {
+    next()
+  }
+
+})
+
 export default router
