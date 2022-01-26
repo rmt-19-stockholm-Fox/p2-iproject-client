@@ -230,6 +230,20 @@ export default new Vuex.Store({
       }).catch(function (error) {
         console.error(error)
       })
+    },
+    successPayment (context, payload) {
+      axios({
+        url: 'https://travelyuk.herokuapp.com/successpayment',
+        method: 'post',
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        },
+        data: {
+          id: payload
+        }
+      })
+        .then(data => console.log(data))
+        .catch(err => console.log(err))
     }
   },
   modules: {
