@@ -9,9 +9,9 @@ import GAuth from 'vue-google-oauth2';
 import { initializeApp } from 'firebase/app';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faPlus, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faPlus, faTrashAlt);
+library.add(faPlus, faAngleLeft, faAngleRight);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 initializeApp({
