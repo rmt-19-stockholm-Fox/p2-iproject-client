@@ -16,11 +16,15 @@ export default new Vuex.Store({
     newDiary: {},
     diaryList: {},
     userList: {},
+    friendList: {},
     getTag: {},
   },
   mutations: {
     GET_TAG(state, payload) {
       state.getTag = payload;
+    },
+    GET_FRIENDLIST(state, payload) {
+      state.friendList = payload;
     },
     CHANGE_USERDATA(state, payload) {
       state.userData = payload;
@@ -205,6 +209,16 @@ export default new Vuex.Store({
           headers: { access_token: localStorage.getItem("access_token") },
         });
         context.dispatch("getDiary");
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getFriendList(context) {
+      try {
+        const mutualList = await axios.get("http://localhost:3000/mutualList", {
+          headers: { access_token: localStorage.getItem("access_token") },
+        });
+        context.commit("GET_FRIENDLIST", mutualList.data);
       } catch (err) {
         console.log(err);
       }
