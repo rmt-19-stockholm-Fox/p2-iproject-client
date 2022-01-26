@@ -16,7 +16,10 @@
           <font-awesome-icon :icon="['fas', 'angle-right']" />
         </button>
       </div>
-      <img :src="displayedImage" style="max-width: 300px;">
+      <img v-if="isLoadingImage" src="../assets/images/loading.gif" style="max-width: 300px;" />
+      <img :src="displayedImage" @load="isLoadingImage = false"
+        :style="{ 'max-width': isLoadingImage ? '1px' : '300px'}"
+      />
     </div>
     <div style="padding: 15px 15px 12px;">
       <div>{{ post.content }}</div>
@@ -33,7 +36,8 @@ export default {
   props: ['post'],
   data() {
     return {
-      displayedImageNum: 0
+      displayedImageNum: 0,
+      isLoadingImage: true
     }
   },
   computed: {
@@ -49,6 +53,9 @@ export default {
     }
   },
   methods: {
+    loaded() {
+      console.log('loaded');
+    },
     async confirmDeletePost() {
       try {
         const result = await Alert.confirm({
@@ -72,6 +79,7 @@ export default {
       }
     },
     setDisplayedImage(num) {
+      this.isLoadingImage = true;
       this.displayedImageNum = num;
     }
   },
