@@ -17,7 +17,8 @@ export default new Vuex.Store({
     imageViewer: {
       onChange: null,
       onDiscard: null
-    }
+    },
+    places: []
   },
   getters: {
     isLoggedIn(state) {
@@ -52,6 +53,9 @@ export default new Vuex.Store({
     },
     SET_IMAGE_VIEWER(state, listeners) {
       state.imageViewer = listeners;
+    },
+    SET_PLACES(state, places) {
+      state.places = places;
     }
   },
   actions: {
@@ -123,6 +127,18 @@ export default new Vuex.Store({
         await axios.delete(`/posts/${postId}`, {
           headers: { access_token: storage.accessToken.value() }
         });
+      } catch(err) {
+        console.log(err);
+      }
+    },
+    async searchPlaces(context, searchText) {
+      try {
+        const { data } = await axios.get('/places', {
+          params: { name: searchText },
+          headers: { access_token: storage.accessToken.value() }
+        });
+
+        context.commit('SET_PLACES', data);
       } catch(err) {
         console.log(err);
       }

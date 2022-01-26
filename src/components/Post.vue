@@ -79,8 +79,6 @@ export default {
     if (this.imageUrls.length > 0) {
       this.displayedImageNum = 1;
     }
-
-    console.log(this.post.id, this.imageUrls.length, this.displayedImageNum);
   }
 }
 </script>
