@@ -1,9 +1,9 @@
 <template>
   <div>
-    <navbar></navbar>
     <div
-      class="bg-gradient-to-b from-sky-400 to-sky-200bg-gradient-to-b from-sky-400 to-sky-200 min-h-screen"
+      class="bg-gradient-to-b from-sky-400 to-sky-200 bg-gradient-to-b from-sky-400 to-sky-200 h-screen"
     >
+      <navbar></navbar>
       <div>
         <form action="" @submit.prevent="findUser">
           <input
