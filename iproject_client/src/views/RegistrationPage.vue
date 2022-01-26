@@ -1,17 +1,56 @@
 <template>
   <div>
-    <form action="" @submit.prevent="registrationHandler">
-      <input type="text" placeholder="name" v-model="user.name" />
-      <input type="text" placeholder="username" v-model="user.username" />
-      <input type="text" placeholder="email" v-model="user.email" />
-      <input type="password" placeholder="password" v-model="user.password" />
-      <input
-        type="text"
-        placeholder="ex: 628126097xxx"
-        v-model="user.phoneNumber"
-      />
-      <button type="sumbit">Sign Up</button>
-    </form>
+    <div
+      class="bg-gradient-to-b from-sky-400 to-sky-200bg-gradient-to-b from-sky-400 to-sky-200 min-h-screen"
+    >
+      <div class="grid place-items-center h-screen">
+        <div class="flex flex-col">
+          <form
+            action=""
+            @submit.prevent="registrationHandler"
+            class="flex flex-col space-y-2"
+          >
+            <h1 class="font-bold text-2xl">Sign Up</h1>
+            <input
+              type="text"
+              placeholder="Name"
+              v-model="user.name"
+              class="border-blue-300 border-3 rounded-md py-2 px-6 focus:outline-none focus:ring focus:ring-blue-400"
+            />
+            <input
+              type="text"
+              placeholder="Username"
+              v-model="user.username"
+              class="border-blue-300 border-3 rounded-md py-2 px-6 focus:outline-none focus:ring focus:ring-blue-400"
+            />
+            <input
+              type="text"
+              placeholder="Email"
+              v-model="user.email"
+              class="border-blue-300 border-3 rounded-md py-2 px-6 focus:outline-none focus:ring focus:ring-blue-400"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              v-model="user.password"
+              class="border-blue-300 border-3 rounded-md py-2 px-6 focus:outline-none focus:ring focus:ring-blue-400"
+            />
+            <input
+              type="text"
+              placeholder="Ex: 628126097xxx"
+              v-model="user.phoneNumber"
+              class="border-blue-300 border-3 rounded-md py-2 px-6 focus:outline-none focus:ring focus:ring-blue-400"
+            />
+            <button
+              type="sumbit"
+              class="bg-blue-300 hover:bg-blue-400 rounded-md text-sm py-2 text-white drop-shadow-md"
+            >
+              Sign Up
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

@@ -1,20 +1,30 @@
 <template>
   <div>
-    <div>
-      <form action="" @submit.prevent="findUser">
-        <input type="search" placeholder="Search user ..." v-model="username" />
-        <button type="submit">search</button>
-      </form>
+    <navbar></navbar>
+    <div
+      class="bg-gradient-to-b from-sky-400 to-sky-200bg-gradient-to-b from-sky-400 to-sky-200 min-h-screen"
+    >
+      <div>
+        <form action="" @submit.prevent="findUser">
+          <input
+            type="search"
+            placeholder="Search user ..."
+            v-model="username"
+          />
+          <button type="submit">search</button>
+        </form>
+      </div>
+      <div>{{ diaryList }}</div>
+      <br /><br />
+      <div>{{ userList }}</div>
+      <br />
+      <button @click="chatButtonHandler">chat</button>
     </div>
-    <div>{{ diaryList }}</div>
-    <br /><br />
-    <div>{{ userList }}</div>
-    <br />
-    <button @click="chatButtonHandler">chat</button>
   </div>
 </template>
 
 <script>
+import Navbar from "../components/Navbar.vue";
 import { mapActions, mapMutations, mapState } from "vuex";
 export default {
   name: "HomePage",
@@ -23,6 +33,9 @@ export default {
       username: "",
       usernameToServer: localStorage.getItem("userName"),
     };
+  },
+  components: {
+    Navbar,
   },
   computed: {
     ...mapState(["diaryList", "userList"]),

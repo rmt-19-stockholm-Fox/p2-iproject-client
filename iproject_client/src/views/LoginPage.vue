@@ -1,10 +1,45 @@
 <template>
   <div>
-    <form action="" @submit.prevent="loginHandler">
-      <input type="text" placeholder="email" v-model="user.email" />
-      <input type="password" placeholder="password" v-model="user.password" />
-      <button type="submit">Login</button>
-    </form>
+    <div
+      class="bg-gradient-to-b from-sky-400 to-sky-200bg-gradient-to-b from-sky-400 to-sky-200 min-h-screen"
+    >
+      <div class="grid place-items-center h-screen">
+        <div class="flex flex-col">
+          <form
+            action=""
+            @submit.prevent="loginHandler"
+            class="flex flex-col space-y-2"
+          >
+            <h1 class="font-bold text-2xl">Sign In</h1>
+            <input
+              type="text"
+              placeholder="Email"
+              v-model="user.email"
+              class="border-blue-300 border-3 rounded-md py-2 px-6 focus:outline-none focus:ring focus:ring-blue-400"
+            />
+            <input
+              class="border-blue-300 border-3 rounded-md py-2 px-6 focus:outline-none focus:ring focus:ring-blue-400"
+              type="password"
+              placeholder="Password"
+              v-model="user.password"
+            />
+            <button
+              type="submit"
+              class="bg-blue-400 hover:bg-blue-500 rounded-md text-sm py-2 text-white drop-shadow-md"
+            >
+              Login
+            </button>
+            <router-link
+              to="/registrationpage"
+              type="sumbit"
+              class="bg-green-300 hover:bg-green-400 rounded-md text-sm py-2 text-white drop-shadow-md"
+            >
+              Sign Up
+            </router-link>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
