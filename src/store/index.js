@@ -118,9 +118,10 @@ export default new Vuex.Store({
         console.log(err);
       }
     },
-    async fetchPosts(context) {
+    async fetchPosts(context, params) {
       try {
         const { data } = await axios.get('/posts', {
+          params,
           headers: { access_token: storage.accessToken.value() }
         });
 
