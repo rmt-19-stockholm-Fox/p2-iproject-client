@@ -35,8 +35,6 @@
 </template>
 
 <script>
-import { getStorage, ref, uploadBytes } from "firebase/storage";
-
 export default {
   name: "PostForm",
   data() {
@@ -63,16 +61,16 @@ export default {
 
           if (this.selectedImageNum > this.postImages.length) {
             const newImageNum = this.selectedImageNum + 1;
-
             const newImageBox = this.ELEMENT_IMAGE_BOX.cloneNode(true);
+
             newImageBox.setAttribute('id', `image-box-${newImageNum}`);
             newImageBox.onclick = () => this.selectImage(newImageNum);
             document.getElementById("images-list").appendChild(newImageBox);
 
             this.postImages.push(this.selectedPostImage);
-            this.selectedImageNum = newImageNum;
           } else {
             this.$store.commit('IMAGE_PREVIEW_IN', currentImg.src);
+            this.postImages[this.selectedImageNum-1] = this.selectedPostImage;
           }
           
           this.selectedPostImage = null;
@@ -81,38 +79,20 @@ export default {
         reader.readAsDataURL(value);
       }
     },
-    '$store.state.createdPost'(value) {
-      this.uploadPostImages(value.id)
-        .then(() => this.$store.dispatch('fetchPosts'))
-        .then(() => {
-          this.resetForm();
-
-          return Promise.resolve();
-        })
+    '$store.state.createdPost'() {
+      this.$store.dispatch('fetchPosts')
+        .then(() => Promise.resolve(this.resetForm()))
         .catch(console.log);
     }
   },
   methods: {
     async createPost() {
       try {
-        await this.$store.dispatch('createPost', this.postContent);
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    uploadPostImages(postId) {
-      try {
-        const p = [];
-
-        this.postImages.forEach((image, index) => {
-          const extension = image.name.split('.').slice(-1).pop();
-          const path = `posts/${postId}/img-${index + 1}.${extension}`;
-          const storageRef = ref(getStorage(), path);
-          p.push(uploadBytes(storageRef, image));
+        await this.$store.dispatch('createPost', {
+          content: this.postContent,
+          images: [ ...this.postImages ]
         });
-
-        return Promise.all(p);
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
     },
@@ -158,6 +138,8 @@ export default {
       this.$store.commit('IMAGE_PREVIEW_OUT');
     },
     resetForm() {
+      console.log('reset');
+
       this.postContent = '';
       this.selectedPostImage = null;
       this.selectedImageNum = 1;

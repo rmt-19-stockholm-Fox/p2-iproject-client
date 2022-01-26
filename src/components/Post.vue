@@ -20,11 +20,6 @@ import Alert from '../helpers/alert';
 export default {
   name: 'Post',
   props: ['post'],
-  data() {
-    return {
-      imageUrl: ''
-    }
-  },
   computed: {
     primaryImage() {
       return this.post.imageUrls 

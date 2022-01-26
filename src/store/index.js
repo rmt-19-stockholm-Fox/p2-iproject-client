@@ -89,12 +89,17 @@ export default new Vuex.Store({
         console.log(err);
       }
     },
-    async createPost(context, postContent) {
+    async createPost(context, post) {
       try {
-        const { data } = await axios.post('/posts', {
-          content: postContent
-        }, {
-          headers: { access_token: storage.accessToken.value() }
+        const formData = new FormData();
+        formData.append('content', post.content);
+        post.images.forEach(image => formData.append('images', image));
+
+        const { data } = await axios.post('/posts', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            access_token: storage.accessToken.value()
+          }
         });
 
         context.commit('SET_CREATED_POST', data);
