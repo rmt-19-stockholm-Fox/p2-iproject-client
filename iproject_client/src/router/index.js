@@ -5,6 +5,7 @@ import RegistrationPage from "../views/RegistrationPage.vue";
 import LoginPage from "../views/LoginPage.vue";
 import EditPage from "../views/EditPage.vue";
 import ChatPage from "../views/ChatPage.vue";
+import CreateDiary from "../views/CreateDiary.vue";
 
 Vue.use(VueRouter);
 
@@ -33,6 +34,11 @@ const routes = [
     path: "/chatpage",
     name: "ChatPage",
     component: ChatPage,
+  },
+  {
+    path: "/creatediary",
+    name: "CreateDiary",
+    component: CreateDiary,
   },
 ];
 

@@ -7,14 +7,20 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     registrationStatus: false,
+    newDiaryStatus: false,
     username: "",
     title: "",
     chats: [],
     userData: {},
+    newDiary: {},
     diaryList: {},
     userList: {},
+    getTag: {},
   },
   mutations: {
+    GET_TAG(state, payload) {
+      state.getTag = payload;
+    },
     CHANGE_USERDATA(state, payload) {
       state.userData = payload;
     },
@@ -32,6 +38,12 @@ export default new Vuex.Store({
     },
     CHANGE_TITLE(state, payload) {
       state.title = payload;
+    },
+    CHANGE_NEWDIARY(state, payload) {
+      state.newDiary = payload;
+    },
+    CHANGE_NEW_DIARY_STATUS(state, payload) {
+      state.newDiaryStatus = payload;
     },
     SOCKET_RECEIVEMESSAGEFROMSERVER(state, payload) {
       state.chats = payload;
@@ -127,6 +139,36 @@ export default new Vuex.Store({
           }
         );
         context.commit("CHANGE_USERLIST", findUser.data);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async newDiary(context) {
+      try {
+        const diaryData = context.state.newDiary;
+        await axios({
+          url: "http://localhost:3000/diaries",
+          method: "post",
+          data: {
+            title: diaryData.title,
+            story: diaryData.story,
+            imageUrl: diaryData.imageUrl,
+            TagId: diaryData.TagId,
+          },
+          headers: { access_token: localStorage.getItem("access_token") },
+        });
+        context.commit("CHANGE_NEW_DIARY_STATUS", true);
+        context.dispatch("getDiary");
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async fetchTag(context) {
+      try {
+        const fetchTag = await axios.get("http://localhost:3000/getTag", {
+          headers: { access_token: localStorage.getItem("access_token") },
+        });
+        context.commit("GET_TAG", fetchTag.data);
       } catch (err) {
         console.log(err);
       }
