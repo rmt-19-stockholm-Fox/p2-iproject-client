@@ -17,16 +17,9 @@ const routes = [
     component: () => import('../views/Profile.vue')
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: () => import('../views/Login.vue'),
-    beforeEnter(to, from, next) {
-      if (storage.accessToken.value()) {
-        next('/');
-      } else {
-        next();
-      }
-    }
+    path: '/place/:id',
+    name: 'Place',
+    component: () => import('../views/Place.vue')
   },
   {
     path: '/logout',

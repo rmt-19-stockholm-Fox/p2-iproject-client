@@ -19,8 +19,10 @@
         </button>
       </div>
       <div class="place-name">
-        <font-awesome-icon :icon="['fas', 'map-marker-alt']" />
-        {{ post.placeName }}
+        <span @click="$router.push(`/place/${post.placeId}`)">
+          <font-awesome-icon :icon="['fas', 'map-marker-alt']" style="margin-right: 5px;"/>
+          {{ post.placeName }}
+        </span>
       </div>
       <img v-if="displayedImage && isLoadingImage" src="../assets/images/loading.gif" style="max-width: 300px;" />
       <img :src="displayedImage" @load="isLoadingImage = false"
@@ -28,6 +30,12 @@
       />
     </div>
     <div style="padding: 15px 15px 12px;">
+      <div v-if="post.User"
+        title="visit profile" class="user-name">
+        <span @click="$router.push(`/profile/${post.User.id}`)">
+          {{ post.User ? post.User.name : '' }}
+        </span>
+      </div>
       <div>{{ post.content }}</div>
       <div class="date">{{ new Date(post.createdAt).toLocaleString() }}</div>
     </div>
@@ -58,7 +66,8 @@ export default {
         : []
     },
     isAllowedToModify() {
-      return this.$route.params.id == this.$store.state.user.id;
+      return this.$store.user && 
+        this.$route.params.id == this.$store.state.user.id;
     }
   },
   methods: {
@@ -115,7 +124,29 @@ export default {
     color: #eee;
     font-size: 0.9rem;
     font-weight: bold;
-    
+    z-index: 299;
+
+    span {
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .user-name {
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 7px;
+
+    span {
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
   .date {

@@ -17,7 +17,7 @@
       </div>
       <div class="row mt-3">
         <div class="col" style="margin-bottom: 80px;">
-          <PostsList></PostsList>
+          <PostsList :params="{ userId: $route.params.id, excludeUser: true }"></PostsList>
         </div>
       </div>
     </div>
@@ -80,11 +80,6 @@ export default {
     },
     isAllowedToModify() {
       return this.$store.state.user && this.$route.params.id == this.$store.state.user.id;
-    }
-  },
-  methods: {
-    handleClick() {
-      this.isClicked = !this.isClicked;
     }
   },
   async beforeCreate() {

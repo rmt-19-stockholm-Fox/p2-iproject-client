@@ -27,6 +27,7 @@ import Post from './Post.vue';
 export default {
   name: 'PostsList',
   components: { Post },
+  props: ['params'],
   computed: {
     ...mapState(['posts']),
     postColumns() {
@@ -38,7 +39,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('fetchPosts', { userId: this.$route.params.id });
+    this.$store.dispatch('fetchPosts', this.params);
   }
 }
 </script>

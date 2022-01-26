@@ -20,7 +20,8 @@ export default new Vuex.Store({
     },
     places: [],
     avatarUrl: '',
-    profile: {}
+    profile: {},
+    placeProfile: {}
   },
   getters: {
     isLoggedIn(state) {
@@ -61,6 +62,9 @@ export default new Vuex.Store({
     },
     RESET_PROFILE(state) {
       state.profile = {};
+    },
+    SET_PLACE_PROFILE(state, placeProfile) {
+      state.placeProfile = placeProfile;
     }
   },
   actions: {
@@ -158,6 +162,22 @@ export default new Vuex.Store({
         context.commit('SET_PROFILE', data);
       } catch(err) {
         console.log(err);
+      }
+    },
+    async fetchPlaceDetail(context, placeId) {
+      try {
+        const { data } = await axios.get(`/places/${placeId}`);
+        
+        console.log(data);
+
+        context.commit('SET_PLACE_PROFILE', {
+          name: data.name,
+          address: data.formatted_address,
+          icon: data.icon,
+          photos: data.photos
+        });
+      } catch(err) {
+        console.log();
       }
     }
   },

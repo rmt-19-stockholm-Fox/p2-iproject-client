@@ -7,9 +7,7 @@
       <router-link v-if="$store.getters.isLoggedIn" :to="{ path: `/profile/${$store.state.user.id}`}">
         Profile
       </router-link>
-      <router-link v-if="!$store.getters.isLoggedIn" to="/login">
-        Login
-      </router-link>
+      <a v-if="!$store.getters.isLoggedIn" @click="loginGoogle">Login</a>
       <router-link v-if="$store.getters.isLoggedIn" to="/logout">
         Logout
       </router-link>
@@ -33,13 +31,24 @@ export default {
       }
     }
   },
-  beforeCreate() {
-    this.$store.dispatch('fetchAvatarUrl');
-    const accessToken = storage.accessToken.value();
+  methods: {
+    async loginGoogle() {
+      const googleUser = await this.$gAuth.signIn();
+      this.$store.dispatch('loginGoogle', googleUser.getAuthResponse().id_token);
+      this.$router.push('/');
+      this.initSignIn();
+    },
+    initSignIn() {
+      this.$store.dispatch('fetchAvatarUrl');
+      const accessToken = storage.accessToken.value();
 
-    if (accessToken) {
-      this.$store.dispatch('fetchUser', accessToken);
+      if (accessToken) {
+        this.$store.dispatch('fetchUser', accessToken);
+      }
     }
+  },
+  created() {
+    this.initSignIn();
   }
 }
 </script>
@@ -63,6 +72,11 @@ export default {
     margin-right: 5px;
     font-weight: bold;
     color: #2c3e50;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
 
     &.router-link-exact-active {
       color: #42b983;
