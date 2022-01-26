@@ -6,6 +6,7 @@ import LoginPage from "../views/LoginPage.vue";
 import EditPage from "../views/EditPage.vue";
 import ChatPage from "../views/ChatPage.vue";
 import CreateDiary from "../views/CreateDiary.vue";
+import FindPage from "../views/FindPage.vue";
 
 Vue.use(VueRouter);
 
@@ -39,6 +40,11 @@ const routes = [
     path: "/creatediary",
     name: "CreateDiary",
     component: CreateDiary,
+  },
+  {
+    path: "/findpage",
+    name: "FindPage",
+    component: FindPage,
   },
 ];
 

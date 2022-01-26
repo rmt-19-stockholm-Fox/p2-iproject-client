@@ -59,7 +59,7 @@
               class="px-3 py-2 flex items-center text-sm uppercase font-light leading-snug text-slate-500 hover:opacity-75"
               href=""
             >
-              <span class="ml-2" @click="newDiaryHandler">New Diary</span>
+              <router-link to="creatediary" class="ml-2">New Diary</router-link>
             </a>
           </li>
           <div class="group inline-block relative">
@@ -133,13 +133,11 @@ export default {
     searchUsername() {
       this.changeUsername(this.username);
       this.searchUser();
+      this.$router.push("/findpage");
     },
     logoutHandler() {
       localStorage.clear();
       this.$router.push("/loginpage");
-    },
-    newDiaryHandler() {
-      this.$router.push("/creatediary");
     },
   },
   created() {
