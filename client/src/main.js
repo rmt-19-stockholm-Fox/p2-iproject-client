@@ -6,6 +6,12 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import { BootstrapVueIcons } from 'bootstrap-vue'
+import VueSocketIOExt from 'vue-socket.io-extended'
+import { io } from 'socket.io-client'
+
+const socket = io('http://localhost:4000')
+
+Vue.use(VueSocketIOExt, socket, { store })
 
 Vue.use(BootstrapVueIcons)
 Vue.use(VueSweetalert2)

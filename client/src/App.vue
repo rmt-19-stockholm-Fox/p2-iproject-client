@@ -2,14 +2,16 @@
   <div id="app">
     <my-nav-bar/>
     <router-view/>
+    <HFooter></HFooter>
   </div>
 </template>
 
 <script>
 import MyNavBar from './components/MyNavBar.vue'
+import HFooter from 'vue-hacktiv8-footer'
 
 export default {
-  components: { MyNavBar }
+  components: { MyNavBar, HFooter }
 }
 </script>
 

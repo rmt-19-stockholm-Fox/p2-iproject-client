@@ -3,16 +3,16 @@
   <div class="container-fluid">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link active" href="#">Active</a>
-      </li>
-     <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <router-link class="nav-link active" to="/">Home</router-link>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <router-link class="nav-link active" to="/login">Login</router-link>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
+        <a class="nav-link" href="" v-on:click.prevent='logoutClick'>Logout</a>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link active" to="/travelplace">TravelPlace</router-link>
       </li>
     </ul>
   </div>
@@ -21,7 +21,13 @@
 
 <script>
 export default {
-  name: 'NavBar'
+  name: 'NavBar',
+  methods: {
+    logoutClick () {
+      localStorage.clear()
+      this.$router.push({ path: '/login' })
+    }
+  }
 }
 </script>
 

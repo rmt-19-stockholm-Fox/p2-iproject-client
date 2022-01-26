@@ -1,5 +1,7 @@
 <template>
-  <section class="vh-100">
+  <section class="vh-100" style='background-color: #FFE53B;
+background-image: linear-gradient(147deg, #FFE53B 0%, #FF2525 74%);
+'>
   <div class="container-fluid h-custom">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-md-9 col-lg-6 col-xl-5">
@@ -27,7 +29,7 @@
             <button type="submit" class="btn btn-primary btn-lg"
               style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
             <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a v-on:click.prevent='goRegisterPage' href=""
-                class="link-danger">Register</a></p>
+                class="link">Register</a></p>
           </div>
 
         </form>
@@ -54,6 +56,7 @@ export default {
         .then(data => {
           this.formLogin.email = ''
           this.formLogin.password = ''
+          this.$router.push({ path: '/' })
           this.$swal.fire({
             icon: 'success',
             title: 'Login Successfully',
@@ -61,10 +64,11 @@ export default {
           })
         })
         .catch(err => {
+          console.log(err)
           this.$swal.fire({
             icon: 'error',
-            title: 'Login Successfully',
-            text: `${err.response.data.message}`
+            title: 'Login Failed',
+            text: `${err}`
           })
         })
     },
