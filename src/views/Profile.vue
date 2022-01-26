@@ -73,14 +73,10 @@ export default {
       return this.$store.state.avatarUrl;
     },
     userEmail() {
-      return this.$store.state.user 
-        ? this.$store.state.user.email 
-        : 'not logged in';
+      return this.$store.state.profile.email
     },
     userName() {
-      return this.$store.state.user
-        ? this.$store.state.user.name ? this.$store.state.user.name : 'No Name'
-        : 'No Name'
+      return this.$store.state.profile.name
     },
     isAllowedToModify() {
       return this.$store.state.user && this.$route.params.id == this.$store.state.user.id;
@@ -89,6 +85,19 @@ export default {
   methods: {
     handleClick() {
       this.isClicked = !this.isClicked;
+    }
+  },
+  async beforeCreate() {
+    try {
+      this.$store.commit('RESET_PROFILE');
+
+      await this.$store.dispatch('fetchProfile', this.$route.params.id);
+
+      if (Object.keys(this.$store.state.profile).length == 0) {
+        this.$router.push('/');
+      }
+    } catch(err) {
+      console.log(err);
     }
   }
 }
