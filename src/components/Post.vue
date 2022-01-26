@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="d-flex justify-content-center align-items-center" style="width: 300px; position: relative;">
+    <div class="d-flex justify-content-center align-items-center" style="width: 300px; position: relative; min-height: 70px;">
       <button @click="confirmDeletePost" title="delete" class="delete-button btn btn-danger">
         X
       </button>
@@ -15,6 +15,10 @@
           @click="() => setDisplayedImage(this.displayedImageNum + 1)">
           <font-awesome-icon :icon="['fas', 'angle-right']" />
         </button>
+      </div>
+      <div class="place-name">
+        <font-awesome-icon :icon="['fas', 'map-marker-alt']" />
+        {{ post.placeName }}
       </div>
       <img v-if="displayedImage && isLoadingImage" src="../assets/images/loading.gif" style="max-width: 300px;" />
       <img :src="displayedImage" @load="isLoadingImage = false"
@@ -53,9 +57,6 @@ export default {
     }
   },
   methods: {
-    loaded() {
-      console.log('loaded');
-    },
     async confirmDeletePost() {
       try {
         const result = await Alert.confirm({
@@ -98,6 +99,19 @@ export default {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 7px 25px -3px;
   margin-bottom: 35px;
   transition: transform 0.4s ease-out;
+
+  .place-name {
+    width: 100%;
+    height: 70px;
+    padding: 7px;
+    position: absolute;
+    top: 0;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.77), rgb(0, 0, 0, 0));
+    color: #eee;
+    font-size: 0.9rem;
+    font-weight: bold;
+    
+  }
 
   .date {
     margin-top: 7px;
