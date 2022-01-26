@@ -1,5 +1,5 @@
 <template>
-  <div @click="$emit('click', place)" class="place-suggestion">
+  <div @click="handleClick" class="place-suggestion">
     <div class="place-image-wrapper">
       <div class="place-image"
         :style="{
@@ -40,6 +40,12 @@ export default {
   methods: {
     visitPlacePage() {
       console.log('visiting page', this.place.name);
+    },
+    handleClick() {
+      this.$emit('click', {
+        id: this.place.place_id,
+        name: this.place.name,
+      });
     }
   },
   created() {
