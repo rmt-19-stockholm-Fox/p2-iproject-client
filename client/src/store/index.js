@@ -41,7 +41,7 @@ export default new Vuex.Store({
     loginSubmit (context, payload) {
       return new Promise((resolve, reject) => {
         axios({
-          url: 'http://localhost:3000/login',
+          url: 'https://travelyuk.herokuapp.com/login',
           method: 'post',
           data: {
             email: payload.email,
@@ -65,7 +65,7 @@ export default new Vuex.Store({
     registerSubmit (context, payload) {
       return new Promise((resolve, reject) => {
         axios({
-          url: 'http://localhost:3000/register',
+          url: 'https://travelyuk.herokuapp.com/register',
           method: 'post',
           data: {
             email: payload.email,
@@ -81,7 +81,7 @@ export default new Vuex.Store({
     postTravel (context, payload) {
       return new Promise((resolve, reject) => {
         axios({
-          url: 'http://localhost:3000/travel',
+          url: 'https://travelyuk.herokuapp.com/travel',
           method: 'post',
           headers: {
             access_token: localStorage.getItem('access_token')
@@ -101,7 +101,7 @@ export default new Vuex.Store({
     },
     fetchTravels (context, payload) {
       axios({
-        url: 'http://localhost:3000/travel',
+        url: 'https://travelyuk.herokuapp.com/travel',
         method: 'get',
         headers: {
           access_token: localStorage.getItem('access_token')
@@ -114,7 +114,7 @@ export default new Vuex.Store({
     },
     fetchBookings (context, payload) {
       axios({
-        url: 'http://localhost:3000/bookings',
+        url: 'https://travelyuk.herokuapp.com/bookings',
         method: 'get',
         headers: {
           access_token: localStorage.getItem('access_token')
@@ -127,7 +127,7 @@ export default new Vuex.Store({
     },
     fetchDetailTravel (context, payload) {
       axios({
-        url: `http://localhost:3000/travel/${payload}`,
+        url: `https://travelyuk.herokuapp.com/travel/${payload}`,
         method: 'get',
         headers: {
           access_token: localStorage.getItem('access_token')
@@ -141,7 +141,7 @@ export default new Vuex.Store({
     payNow (context, payload) {
       return new Promise((resolve, reject) => {
         axios({
-          url: 'http://localhost:3000/midtrans',
+          url: 'https://travelyuk.herokuapp.com/midtrans',
           method: 'post',
           headers: {
             access_token: localStorage.getItem('access_token')
@@ -157,7 +157,7 @@ export default new Vuex.Store({
     bookNow (context, payload) {
       return new Promise((resolve, reject) => {
         axios({
-          url: `http://localhost:3000/bookings/${payload}`,
+          url: `https://travelyuk.herokuapp.com/bookings/${payload}`,
           method: 'post',
           headers: {
             access_token: localStorage.getItem('access_token')
@@ -174,7 +174,7 @@ export default new Vuex.Store({
     submitEvents (context, payload) {
       return new Promise((resolve, reject) => {
         axios({
-          url: `http://localhost:3000/events/${payload.postId}`,
+          url: `https://travelyuk.herokuapp.com/events/${payload.postId}`,
           method: 'post',
           headers: {
             access_token: localStorage.getItem('access_token')
