@@ -3,7 +3,8 @@
     <div class="w-screen h-24 bg-blue-600">
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
-    <router-link to="/location/add">Add Location</router-link>
+    <router-link to="/location/add">Add Location</router-link> |
+    <router-link to="/login">Login</router-link> |
     </div>
   </div>
 </template>

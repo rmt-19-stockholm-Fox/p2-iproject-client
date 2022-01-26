@@ -15,12 +15,46 @@ const routes = [
     name: "LocationAddForm",
     component: () =>
       import("../views/LocationAddForm.vue"),
+    beforeEnter: (to, from, next) => {
+      if (!localStorage.getItem('access_token')) {
+        next('/')
+      } else {
+        next()
+      }
+    }
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: () =>
+      import("../views/Register.vue"),
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem('access_token')) {
+        next('/')
+      } else {
+        next()
+      }
+    }
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () =>
+      import("../views/Login.vue"),
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem('access_token')) {
+        next('/')
+      } else {
+        next()
+      }
+    }
+
   },
   {
     path: "/location/:locationId",
     name: "LocationDetail",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+      import("../views/About.vue"),
   },
 ];
 

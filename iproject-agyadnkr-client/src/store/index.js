@@ -9,6 +9,7 @@ const ORIGIN = 'http://localhost:3000'
 
 export default new Vuex.Store({
   state: {
+    isLogged: false,
     center: {
       lat: -7.759722999999999,
       lng: 110.3989719
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     existingPlace: {},
   },
   mutations: {
+    SET_ISLOGGED(state, payload) {
+      state.isLogged = payload;
+    },
     ADD_ALL_LOCATION(state, payload) {
       state.allLocation = payload;
     },
@@ -55,7 +59,7 @@ export default new Vuex.Store({
           commit('ADD_LOCATION_MARKER', marker);
           commit('ADD_LOCPLACES', state.existingPlace);
           commit('SET_CENTER', marker)
-          
+
           const payload = {
             name: state.existingPlace.name,
             address: state.existingPlace.formatted_address,
@@ -108,6 +112,31 @@ export default new Vuex.Store({
         console.log(error.response.data)
       }
     },
+
+    async loginHandler({ commit, dispatch }, payload) {
+      try {
+        try {
+          const result = await axios({
+            method: 'POST',
+            url: `${ORIGIN}/login`,
+            data: payload
+          })
+
+          console.log(result)
+          localStorage.setItem('access_token', result.data.access_token)
+          localStorage.setItem('userId', result.data.id)
+          localStorage.setItem('userEmail', result.data.email)
+          localStorage.setItem('userRole', result.data.role)
+
+          dispatch('fetchLocations')
+          commit('SET_ISLOGGED', true)
+
+          router.push({ name: 'Home' });
+        } catch (error) {
+
+        }
+      }
+    }
   },
-  modules: {},
-});
+    modules: {},
+  });
