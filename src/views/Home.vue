@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col">
+      <div class="col mb-5">
         <PostsList></PostsList>
       </div>
     </div>
