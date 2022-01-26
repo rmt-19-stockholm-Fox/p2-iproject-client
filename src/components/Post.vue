@@ -1,10 +1,22 @@
 <template>
   <div class="card">
-    <div class="d-flex justify-content-center align-items-center" style="width: 300px;">
+    <div class="d-flex justify-content-center align-items-center" style="width: 300px; position: relative;">
       <button @click="confirmDeletePost" title="delete" class="delete-button btn btn-danger">
         X
       </button>
-      <img :src="primaryImage" style="max-width: 300px;">
+      <div class="images-control btn">
+        <button title="previous" 
+          :disabled="displayedImageNum <= 1"
+          @click="() => setDisplayedImage(this.displayedImageNum - 1)">
+          <font-awesome-icon :icon="['fas', 'angle-left']" />
+        </button>
+        <button title="next" 
+          :disabled="displayedImageNum === imageUrls.length"
+          @click="() => setDisplayedImage(this.displayedImageNum + 1)">
+          <font-awesome-icon :icon="['fas', 'angle-right']" />
+        </button>
+      </div>
+      <img :src="displayedImage" style="max-width: 300px;">
     </div>
     <div style="padding: 15px 15px 12px;">
       <div>{{ post.content }}</div>
@@ -14,17 +26,26 @@
 </template>
 
 <script>
-import { getStorage, listAll, ref, deleteObject } from "firebase/storage";
 import Alert from '../helpers/alert';
 
 export default {
   name: 'Post',
   props: ['post'],
+  data() {
+    return {
+      displayedImageNum: 0
+    }
+  },
   computed: {
-    primaryImage() {
-      return this.post.imageUrls 
-        ? this.post.imageUrls.split(';')[0]
+    displayedImage() {
+      return this.displayedImageNum > 0
+        ? this.imageUrls[this.displayedImageNum-1]
         : '';
+    },
+    imageUrls() {
+      return this.post.imageUrls
+        ? this.post.imageUrls.split(';')
+        : []
     }
   },
   methods: {
@@ -46,23 +67,20 @@ export default {
       try {
         await this.$store.dispatch('deletePost', this.post.id);
         this.$store.dispatch('fetchPosts');
-        this.deletePostImages();
       } catch(err) {
         console.log(err);
       }
     },
-    async deletePostImages() {
-      try {
-        console.log('deleting post images', this.post.id);
-  
-        const result = await listAll(ref(getStorage(), `posts/${this.post.id}`));
-        const p = result.items.map(itemRef => deleteObject(itemRef));
-        
-        await Promise.all(p);
-      } catch(err) {
-        console.log(err);
-      }
+    setDisplayedImage(num) {
+      this.displayedImageNum = num;
     }
+  },
+  created() {
+    if (this.imageUrls.length > 0) {
+      this.displayedImageNum = 1;
+    }
+
+    console.log(this.post.id, this.imageUrls.length, this.displayedImageNum);
   }
 }
 </script>
@@ -90,6 +108,38 @@ export default {
     font-weight: bold;
     padding: 3px 9px;
     opacity: 0.85;
+    z-index: 50;
+  }
+
+  .images-control {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    padding: 5px;
+    z-index: 49;
+
+    button {
+      margin: 0;
+      padding-left: 9px;
+      padding-right: 9px;
+      border: none;
+      border-radius: 7px;
+      background-color: rgba($color: white, $alpha: 0.4);
+      color: #777;
+      font-size: 1.25rem;
+
+      &:hover {
+        color: #333;
+        background-color: rgba($color: white, $alpha: 0.75);
+      }
+
+      &:disabled {
+        visibility: hidden;
+      }
+    }
   }
 
   &:hover {
@@ -97,6 +147,12 @@ export default {
 
     .delete-button {
       display: inline;
+    }
+
+    .images-control {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
   }
 }
