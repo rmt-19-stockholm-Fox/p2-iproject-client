@@ -1,5 +1,7 @@
 <template>
-    <section class="vh-100">
+    <section class="vh-100" style='background-color: #FFE53B;
+background-image: linear-gradient(147deg, #FFE53B 0%, #FF2525 74%);
+'>
   <div class="container-fluid h-custom">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-md-9 col-lg-6 col-xl-5">
@@ -27,7 +29,7 @@
             <button type="submit" class="btn btn-primary btn-lg"
               style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
             <p class="small fw-bold mt-2 pt-1 mb-0">Back to Login <a v-on:click.prevent='goLoginPage' href=""
-                class="link-danger">Login</a></p>
+                class="link">Login</a></p>
           </div>
 
         </form>

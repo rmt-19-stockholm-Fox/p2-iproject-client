@@ -1,10 +1,15 @@
 <template>
-<div class="section p-2">
-    <div class="row bg-primary">
-      <div class="col bg-secondary">
-        <div class="row bg-danger">
-          <div class="card mx-auto m-1" style="width: 18rem;" v-for="travelPost in travelPosts" v-bind:key='travelPost.id'>
-            <img v-bind:src="travelPost.imageUrl" class="card-img-top" alt="">
+<div class="section p-2 vh-100" style='background-color: #FFDEE9;
+        background-image: linear-gradient(0deg, #FFDEE9 0%, #B5FFFC 100%);
+        '>
+    <div class="row">
+      <div class="col-8 border border-5">
+        <div class="row" style='background-color: #FFDEE9;
+        background-image: linear-gradient(0deg, #FFDEE9 0%, #B5FFFC 100%);
+        '>
+          <h1 class="bg-secondary">Travel Post</h1>
+          <div class="card mx-auto m-1 border" style="width: 18rem;" v-for="travelPost in travelPosts" v-bind:key='travelPost.id'>
+            <img v-bind:src="travelPost.imageUrl" class="card-img-top p-1" alt="">
             <div class="card-body">
               <h5 class="card-title">{{ travelPost.name }}</h5>
               <p class="card-text">{{ travelPost.summary }}</p>
@@ -12,7 +17,8 @@
             </div>
           </div>
         </div>
-        <div class="row bg-dark">
+        <div class="row bg-dark" v-if="role === 'customer'">
+          <h1 class="bg-secondary">Your Booking</h1>
           <div class="card mx-auto m-1" style="width: 18rem;" v-for="booking in bookings" v-bind:key='booking.id'>
             <img v-bind:src="booking.TravelPost.imageUrl" class="card-img-top" alt="">
             <div class="card-body">
@@ -23,16 +29,23 @@
           </div>
       </div>
       </div>
-      <div class="col-4 bg-success">
+      <div class="col-4 border border-5" style='background-color: #8BC6EC;
+      background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+      '>
         <div id="wrapper">
             <div id="menu">
                 <p class="welcome">Welcome, <b></b></p>
                 <p class="logout"><a id="exit" href="#">Exit Chat</a></p>
             </div>
-            <div id="chatbox"></div>
+            <div id="chatbox">
+              <div v-for="chat in chats" v-bind:key="chat.id">
+                <p class="text-end" v-if='email === chat.email'>{{ chat.email }}: {{ chat.message }}</p>
+                <p class="text-start" v-else>{{ chat.email }}: {{ chat.message }}</p>
+              </div>
+            </div>
             <form name="message" action="">
-                <input name="usermsg" type="text" id="usermsg" />
-                <input name="submitmsg" type="submit" id="submitmsg" value="Send" />
+                <input name="usermsg" type="text" id="usermsg" v-model="chatData.chatMessage"/>
+                <button class="btn btn-primary btn-sm" id="btn-chat" v-on:click.prevent='sendMessage'>Send</button>
             </form>
         </div>
       </div>
@@ -44,23 +57,42 @@
 
 export default {
   name: 'Home',
-  components: {
+  data () {
+    return {
+      chatData: {
+        access_token: localStorage.getItem('access_token'),
+        chatMessage: ''
+      },
+      email: localStorage.getItem('email')
+    }
   },
   created () {
+    this.$store.dispatch('refresh')
     this.$store.dispatch('fetchTravels')
     this.$store.dispatch('fetchBookings')
+    this.$store.dispatch('forRefresh')
   },
   methods: {
     goDetailPage (id) {
       this.$router.push({ path: `/travel/${id}` })
+    },
+    sendMessage () {
+      this.$store.dispatch('sendMessage', this.chatData)
+      this.chatData.chatMessage = ''
     }
   },
   computed: {
+    role () {
+      return this.$store.state.role
+    },
     travelPosts () {
       return this.$store.state.travelPosts
     },
     bookings () {
       return this.$store.state.bookings
+    },
+    chats () {
+      return this.$store.state.chats
     }
   }
 }

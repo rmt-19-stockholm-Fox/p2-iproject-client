@@ -1,16 +1,21 @@
 <template>
+<div class="wraper vh-100" style='background-color: #FFDEE9;
+background-image: linear-gradient(0deg, #FFDEE9 0%, #B5FFFC 100%);
+'>
   <div class="container p-2">
+    <h1>{{ detailProduct.name }}</h1>
       <div class="row border">
-        <div class="col-6">
+        <div class="col-6 border">
             <div class="row p-2 border">
                 <img :src="detailProduct.imageUrl" alt="">
             </div>
-            <div class="row p-2 border">
+            <div class="row p-2">
                 <ul class="list-group">
-                  <li class="list-group-item">Price: {{ rupiahFormater(totalPrice) }}</li>
+                  <li class="list-group-item">Total Price: {{ rupiahFormater(totalPrice) }}</li>
                   <li class="list-group-item">Description: {{ detailProduct.summary }}</li>
-                  <li class="list-group-item">Date: {{ detailProduct.date }}</li>
-                  <li class="list-group-item"><button type="button" class="btn btn-primary col-12" v-on:click="bookNow">Book Now</button></li>
+                  <li class="list-group-item">Date: {{ dateFormating(detailProduct.date) }}</li>
+                  <li class="list-group-item"><button v-if="!isBooked && role === 'customer'" type="button" class="btn btn-primary col-12" v-on:click="bookNow">Book Now</button></li>
+                  <li class="list-group-item"><button v-if="isBooked && role === 'customer'" type="button" class="btn btn-primary col-12" disabled>Already Booked</button></li>
                 </ul>
             </div>
         </div>
@@ -28,7 +33,7 @@
                     <tr v-for='event in detailProduct.Events' v-bind:key='event.id'>
                     <th scope="row">{{ event.destination }}</th>
                     <td><img class="flex" :src="event.imageUrl" alt="" style="width:150px;"/></td>
-                    <td>{{ event.schedule }}</td>
+                    <td>{{ dateFormating(event.schedule) }}</td>
                     <td>{{ rupiahFormater(event.price) }}</td>
                     </tr>
                 </tbody>
@@ -42,12 +47,13 @@
                         Submit
                       </button>
                     </form>
-              <button v-if='isAdd === false' v-on:click="addClick" variant="primary" class="btn btn-primary col-12">
+              <button v-if="isAdd === false  && role === 'admin'" v-on:click="addClick" variant="primary" class="btn btn-primary col-12 mb-3">
                 Add Event <b-icon icon="plus" aria-hidden="true"></b-icon>
               </button>
         </div>
       </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -55,6 +61,7 @@ export default {
   name: 'DetailPage',
   data () {
     return {
+      isBooked: false,
       isAdd: false,
       formAddEvent: {
         destination: '',
@@ -65,9 +72,15 @@ export default {
     }
   },
   created () {
+    this.$store.dispatch('refresh')
+    this.checkBooked()
+    this.$store.dispatch('fetchBookings')
     this.$store.dispatch('fetchDetailTravel', this.$route.params.id)
   },
   computed: {
+    role () {
+      return this.$store.state.role
+    },
     detailProduct () {
       return this.$store.state.detailTravel
     },
@@ -79,6 +92,9 @@ export default {
         })
       }
       return totalPrice
+    },
+    bookings () {
+      return this.$store.state.bookings
     }
   },
   methods: {
@@ -86,6 +102,7 @@ export default {
       this.$store.dispatch('bookNow', this.totalPrice)
         .then(data => {
           window.snap.pay(data.token)
+          this.$store.dispatch('bookSuccess', this.$route.params.id)
         })
     },
     rupiahFormater (price) {
@@ -105,6 +122,20 @@ export default {
           this.formAddEvent.price = ''
           this.$store.dispatch('fetchDetailTravel', this.$route.params.id)
         })
+    },
+    dateFormating (input) {
+      const date = new Date(input)
+      const day = (date.getDate())
+      const month = (date.getMonth())
+      const year = (date.getFullYear())
+      return `${day}-${month + 1}-${year}`
+    },
+    checkBooked () {
+      if (this.bookings === undefined) {
+        this.bookings.forEach(e => {
+          if (e.postId === +this.$route.params.id) this.isBooked = true
+        })
+      }
     }
   }
 }
