@@ -16,7 +16,7 @@
           <font-awesome-icon :icon="['fas', 'angle-right']" />
         </button>
       </div>
-      <img v-if="isLoadingImage" src="../assets/images/loading.gif" style="max-width: 300px;" />
+      <img v-if="displayedImage && isLoadingImage" src="../assets/images/loading.gif" style="max-width: 300px;" />
       <img :src="displayedImage" @load="isLoadingImage = false"
         :style="{ 'max-width': isLoadingImage ? '1px' : '300px'}"
       />
