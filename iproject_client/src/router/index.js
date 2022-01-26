@@ -26,7 +26,7 @@ const routes = [
     component: RegistrationPage,
   },
   {
-    path: "/editpage",
+    path: "/editpage/:diaryId",
     name: "EditPage",
     component: EditPage,
   },

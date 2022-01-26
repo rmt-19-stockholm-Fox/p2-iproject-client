@@ -10,6 +10,7 @@ export default new Vuex.Store({
     newDiaryStatus: false,
     username: "",
     title: "",
+    diaryId: 0,
     chats: [],
     userData: {},
     newDiary: {},
@@ -44,6 +45,9 @@ export default new Vuex.Store({
     },
     CHANGE_NEW_DIARY_STATUS(state, payload) {
       state.newDiaryStatus = payload;
+    },
+    CHANGE_DIARY_ID(state, payload) {
+      state.diaryId = payload;
     },
     SOCKET_RECEIVEMESSAGEFROMSERVER(state, payload) {
       state.chats = payload;
@@ -169,6 +173,38 @@ export default new Vuex.Store({
           headers: { access_token: localStorage.getItem("access_token") },
         });
         context.commit("GET_TAG", fetchTag.data);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getMovieById(context) {
+      try {
+        const diaryId = context.state.diaryId;
+        const getMovieDetail = await axios.get(
+          `http://localhost:3000/diaries/${diaryId}`,
+          { headers: { access_token: localStorage.getItem("access_token") } }
+        );
+        context.commit("CHANGE_DIARY_LIST", getMovieDetail.data);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async updateDiary(context) {
+      try {
+        const diaryData = context.state.newDiary;
+        const diaryId = context.state.diaryId;
+        await axios({
+          url: `http://localhost:3000/diaries/${diaryId}`,
+          method: "put",
+          data: {
+            title: diaryData.title,
+            imageUrl: diaryData.imageUrl,
+            story: diaryData.story,
+            TagId: diaryData.TagId,
+          },
+          headers: { access_token: localStorage.getItem("access_token") },
+        });
+        context.dispatch("getDiary");
       } catch (err) {
         console.log(err);
       }

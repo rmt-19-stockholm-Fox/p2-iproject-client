@@ -108,6 +108,8 @@ export default {
     },
   },
   created() {
+    //fetch message yang adda untuk ditampilin ====
+    //pada saat usr menekan submit di bagian input, maka akan ngesend msgny
     if (this.chatMessage.length !== 0) {
       this.sendMessage(this.chatMessage);
     }

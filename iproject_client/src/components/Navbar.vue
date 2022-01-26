@@ -9,8 +9,8 @@
         class="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start"
       >
         <a
-          class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-black"
-          href="#pablo"
+          class="text-xl font-semibold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-slate-500"
+          href=""
         >
           myDiary
         </a>
@@ -28,7 +28,7 @@
           <li class="nav-item">
             <a
               class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-              href="#pablo"
+              href=""
             >
               <i
                 class="fab fa-facebook-square text-lg leading-lg text-white opacity-75"
@@ -37,21 +37,29 @@
           </li>
           <li class="nav-item">
             <a
-              class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-black hover:opacity-75"
-              href="#pablo"
+              class="px-3 py-2 flex items-center text-sm uppercase font-light leading-snug text-slate-500 hover:opacity-75"
+              href=""
             >
               <i
-                class="fab fa-twitter text-lg leading-lg text-black opacity-75"
+                class="fab fa-twitter text-lg leading-lg text-white opacity-75"
               />
               <span class="ml-2">Home</span>
             </a>
           </li>
           <li class="nav-item">
             <a
-              class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-black hover:opacity-75"
-              href="#pablo"
+              class="px-3 py-2 flex items-center text-sm uppercase font-light leading-snug text-slate-500 hover:opacity-75"
+              href=""
             >
-              <span class="ml-2">Settings</span>
+              <span class="ml-2" @click="logoutHandler">Logout</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="px-3 py-2 flex items-center text-sm uppercase font-light leading-snug text-slate-500 hover:opacity-75"
+              href=""
+            >
+              <span class="ml-2" @click="newDiaryHandler">New Diary</span>
             </a>
           </li>
         </ul>
@@ -95,6 +103,13 @@ export default {
     searchUsername() {
       this.changeUsername(this.username);
       this.searchUser();
+    },
+    logoutHandler() {
+      localStorage.clear();
+      this.$router.push("/loginpage");
+    },
+    newDiaryHandler() {
+      this.$router.push("/creatediary");
     },
   },
 };

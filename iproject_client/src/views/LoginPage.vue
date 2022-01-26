@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div
-      class="bg-gradient-to-b from-sky-400 to-sky-200bg-gradient-to-b from-sky-400 to-sky-200 min-h-screen"
-    >
+    <div class="bg-white min-h-screen">
       <div class="grid place-items-center h-screen">
         <div class="flex flex-col">
           <form
@@ -15,10 +13,10 @@
               type="text"
               placeholder="Email"
               v-model="user.email"
-              class="border-blue-300 border-3 rounded-md py-2 px-6 focus:outline-none focus:ring focus:ring-blue-400"
+              class="border-blue-300 border-4 rounded-lg py-2 px-6 focus:outline-none focus:ring focus:ring-blue-400"
             />
             <input
-              class="border-blue-300 border-3 rounded-md py-2 px-6 focus:outline-none focus:ring focus:ring-blue-400"
+              class="border-blue-300 border-4 rounded-lg py-2 px-6 focus:outline-none focus:ring focus:ring-blue-400"
               type="password"
               placeholder="Password"
               v-model="user.password"
