@@ -66,9 +66,11 @@
             </span>
           </div>
           <input
+            v-model="username"
             type="text"
             class="px-2 py-1 h-8 border border-solid border-blueGray-600 rounded-full text-sm leading-snug text-blueGray-700 bg-white shadow-none outline-none focus:outline-none w-full font-normal rounded-l-none flex-1 border-l-0 placeholder-blueGray-300"
             placeholder="Search username"
+            @keyup.enter="searchUsername"
           />
         </div>
       </div>
@@ -77,8 +79,24 @@
 </template>
 
 <script>
+import { mapActions, mapMutations } from "vuex";
 export default {
   name: "Navbar",
+  data() {
+    return {
+      username: "",
+    };
+  },
+  methods: {
+    ...mapMutations({
+      changeUsername: "CHANGE_USERNAME",
+    }),
+    ...mapActions(["searchUser"]),
+    searchUsername() {
+      this.changeUsername(this.username);
+      this.searchUser();
+    },
+  },
 };
 </script>
 

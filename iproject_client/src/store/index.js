@@ -118,6 +118,7 @@ export default new Vuex.Store({
             headers: { access_token: localStorage.getItem("access_token") },
           }
         );
+        console.log("masuk", findUser);
         context.commit("CHANGE_USERLIST", findUser.data);
       } catch (err) {
         console.log(err);
