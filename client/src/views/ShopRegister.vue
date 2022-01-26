@@ -46,7 +46,7 @@ export default {
   height: 400px;
   width: 100%;
 }
-#form-set-up-shop input {
+#form-set-up-shop input{
   border-radius: 5px;
   padding: 2px 8px;
   width: 75%;
@@ -58,7 +58,7 @@ export default {
   border: 1px solid var(--primary);
 }
 
-#form-set-up-shop button {
+#form-set-up-shop button{
   padding: 10px;
   font-size: 17px;
   border-radius: 20%;
@@ -69,20 +69,20 @@ export default {
   margin-top: 10px;
 }
 
-.submit-shop {
+.submit-shop{
   background-color: green;
 }
 
 
-.submit-shop:hover {
+.submit-shop:hover{
   background-color: rgb(0, 163, 0);
 }
 
-.setuplater-shop {
+.setuplater-shop{
   background-color: red;
 }
 
-.setuplater-shop:hover {
+.setuplater-shop:hover{
   background-color: rgb(255, 60, 60);
 }
 
