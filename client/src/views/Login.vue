@@ -5,19 +5,24 @@
     <h3 style="margin: 0px 0">Log In to continue</h3>
 
     <form id="login-form">
-      <input type="text" placeholder="Email Address">
-      <input type="text" placeholder="Password">
+      <input type="email" placeholder="Email Address">
+      <input type="password" placeholder="Password">
       <button type="submit">Log In</button>
     </form>
 
-    <p>Don't have an account? <a href="">Register here!</a></p>
+    <p>Don't have an account? <a @click.prevent="moveToRegister" href="">Register here!</a></p>
     
   </div>
 </template>
 
 <script>
 export default {
-  name: "Login"
+  name: "Login",
+  methods:{
+    moveToRegister() {
+      this.$router.push('/user/register')
+    }
+  }
 }
 </script>
 
