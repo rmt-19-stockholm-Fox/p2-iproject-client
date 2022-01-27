@@ -2,7 +2,7 @@
   <div id="app">
     <section id="hero" class="d-flex align-items-center">
     <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
-      <button v-show="getstatstart!==false" class="btn btn-light" @click="reset">go back</button> <br> <br> 
+      <button v-show="getstatstart!==false" class="btn btn-dark" @click="reset">go back</button> <br> <br> <br>
       <div v-show="getstatstart === false" class="row justify-content-center">
         <div class="col-xl-7 col-lg-9 text-center">
           <h1>PlanMeMyHoliday</h1>
@@ -17,7 +17,7 @@
       </div>
        <router-view />
 
-      <div class="container2 row icon-boxes" v-if="getperftime===false">
+      <div class="container2 row icon-boxes" v-if="getstatstart===false">
         <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="200">
           <div class="icon-box">
             <div class="icon"><i class="ri-stack-line"></i></div>

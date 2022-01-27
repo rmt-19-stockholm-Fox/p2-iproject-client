@@ -11,6 +11,7 @@ export default new Vuex.Store({
     start2: false,
     perftime: false,
     perfplace: false,
+    country: [`Afghanistan`, `Albania`],
   },
   mutations: {
     CHANGE_START(state, plod) {

@@ -5,7 +5,11 @@
           <form @submit.prevent="getmydays" class="rojust">
             <div class="form-group">
          <label for="country">Country:</label>
-         <input type="text" id="country" name="country" class="form-control text-muted" v-model="country" placeholder="The country you live in (this will determine your national holidays)"><br>
+         <input list="countryname" id="country" name="country" class="form-control text-muted" v-model="country" placeholder="The country you live in (this will determine your national holidays)">
+         <datalist id="countryname">
+              <option v-for="x in storecount" :key="x">{{x}}</option>
+          </datalist>
+        <br>
             </div>
             <div class="form-group">
         <label for="year">Year:</label>
@@ -32,7 +36,7 @@
          <input type="checkbox" class="form-check-input" v-model="nmdayoff"  value="sat" id="exampleCheck6"> 
          <label class="form-check-label" for="exampleCheck2">.  SUN:</label>
          <input type="checkbox" class="form-check-input" v-model="nmdayoff"  value="sun" id="exampleCheck7">
-                </div><br>
+                </div><br><br><br>
                 <button v-if="getperftime===false" type="submit" class="btn btn-primary">Submit</button>
                  <button v-else type="submit" class="btn btn-primary">Change My Inputs</button>
           </form> 
@@ -133,6 +137,9 @@ export default {
     },
     getperfplace() {
       return this.$store.state.perfplace
+    },
+    storecount() {
+      return this.$store.state.country
     }
   } 
 }
