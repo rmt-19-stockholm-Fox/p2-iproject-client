@@ -1,11 +1,6 @@
 <template>
   <div class="card">
     <div class="d-flex justify-content-center align-items-center" style="width: 300px; position: relative; min-height: 70px;">
-      <button v-if="isAllowedToModify" 
-        @click="confirmDeletePost"  
-        title="delete" class="delete-button btn btn-danger">
-        X
-      </button>
       <div class="images-control btn">
         <button title="previous" 
           :disabled="displayedImageNum <= 1"
@@ -18,15 +13,22 @@
           <font-awesome-icon :icon="['fas', 'angle-right']" />
         </button>
       </div>
-      <div class="place-name">
-        <span @click="$router.push(`/place/${post.placeId}`)">
-          <font-awesome-icon :icon="['fas', 'map-marker-alt']" style="margin-right: 5px;"/>
-          {{ post.placeName }}
-        </span>
+      <div class="post-header">
+        <button v-if="isAllowedToModify" 
+          @click="confirmDeletePost"  
+          title="delete" class="delete-button btn btn-danger">
+          X
+        </button>
+        <div>
+          <span @click="$router.push(`/place/${post.placeId}`)">
+            <font-awesome-icon :icon="['fas', 'map-marker-alt']" style="margin-right: 5px;"/>
+            {{ post.placeName }}
+          </span>
+        </div>
       </div>
       <img v-if="displayedImage && isLoadingImage" src="../assets/images/loading.gif" style="max-width: 300px;" />
       <img :src="displayedImage" @load="isLoadingImage = false"
-        :style="{ 'max-width': isLoadingImage ? '1px' : '300px'}"
+        :style="{ 'max-width': isLoadingImage ? '1px' : '300px', 'min-width': isLoadingImage ? '1px' : '300px' }"
       />
     </div>
     <div style="padding: 15px 15px 12px;">
@@ -36,7 +38,7 @@
           {{ post.User ? post.User.name : '' }}
         </span>
       </div>
-      <div>{{ post.content }}</div>
+      <div class="post-content">{{ post.content }}</div>
       <div class="date">{{ new Date(post.createdAt).toLocaleString() }}</div>
     </div>
   </div>
@@ -66,7 +68,7 @@ export default {
         : []
     },
     isAllowedToModify() {
-      return this.$store.user && 
+      return this.$store.state.user && 
         this.$route.params.id == this.$store.state.user.id;
     }
   },
@@ -108,13 +110,19 @@ export default {
 
 <style scoped lang="scss">
 .card {
+  max-width: 300px;
   text-align: left;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 7px 25px -3px;
   margin-bottom: 35px;
   transition: transform 0.4s ease-out;
 
-  .place-name {
+  .post-content {
+    font-size: 0.93rem;
+    margin: 3px 0 17px;
+  }
+
+  .post-header {
     width: 100%;
     height: 70px;
     padding: 7px;
