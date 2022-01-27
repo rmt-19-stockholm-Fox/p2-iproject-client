@@ -29,7 +29,7 @@ initializeApp({
 });
 
 const gauthOption = {
-  clientId: '937902885217-kt2rv9ofqhqbo61o6ho147oueub8utf8.apps.googleusercontent.com',
+  clientId: '937902885217-ma3meb9qlfi5fah0e4gt1t8l986v2imv.apps.googleusercontent.com',
   scope: 'profile email',
   prompt: 'select_account'
 };
