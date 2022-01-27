@@ -52,7 +52,7 @@ export default {
   },
   created() {
     if (this.place.photos) {
-      this.photo.src = `${storage.apiHost}/places/photo?ref=${this.place.photos[0].photo_reference}`;
+      this.photo.src = `${storage.apiHost.value()}/places/photo?ref=${this.place.photos[0].photo_reference}`;
     } else {
       this.photo = {
         src: this.place.icon,

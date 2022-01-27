@@ -37,7 +37,7 @@ export default {
     ...mapState(['placeProfile']),
     placePhoto() {
       return this.placeProfile.photos
-        ? `${storage.apiHost}/places/photo?ref=${this.placeProfile.photos[0].photo_reference}`
+        ? `${storage.apiHost.value()}/places/photo?ref=${this.placeProfile.photos[0].photo_reference}`
         : this.placeProfile.icon;
     },
     placeAddress() {
