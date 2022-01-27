@@ -121,6 +121,7 @@ h5 {
   text-align: center;
   transform: translateY(575px);
   transition: transform 0.65s ease-out;
+  z-index: 300;
 
   &.active {
     transform: translateY(0px);
