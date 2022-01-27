@@ -38,7 +38,22 @@
           {{ post.User ? post.User.name : '' }}
         </span>
       </div>
-      <div class="post-content">{{ post.content }}</div>
+      <div class="post-content">
+        <span v-if="isPostContentLong && showingLess" class="short">
+          {{ shortenPostContent }}
+          <span v-if="isPostContentLong"
+            @click="showingLess = false"
+            class="post-content-toggler"
+          > .....more</span>
+        </span>
+        <span v-if="!isPostContentLong || !showingLess" class="long">
+          {{ post.content }}
+          <span v-if="isPostContentLong"
+            @click="showingLess = true"
+            class="post-content-toggler"
+          > .....less</span>
+        </span>
+      </div>
       <div class="date">{{ new Date(post.createdAt).toLocaleString() }}</div>
     </div>
   </div>
@@ -53,7 +68,8 @@ export default {
   data() {
     return {
       displayedImageNum: 0,
-      isLoadingImage: true
+      isLoadingImage: true,
+      showingLess: true
     }
   },
   computed: {
@@ -70,7 +86,16 @@ export default {
     isAllowedToModify() {
       return this.$store.state.user && 
         this.$route.params.id == this.$store.state.user.id;
-    }
+    },
+    isPostContentLong() {
+      return this.post.content.length > 255;
+    },
+    shortenPostContent() {
+      return this.isPostContentLong
+        ? this.post.content.substring(0, 255)
+        : '';
+    },
+
   },
   methods: {
     async confirmDeletePost() {
@@ -120,6 +145,17 @@ export default {
   .post-content {
     font-size: 0.93rem;
     margin: 3px 0 17px;
+    white-space: pre-wrap;
+
+    .post-content-toggler {
+      color: #555;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+        color: #111;
+      }
+    }
   }
 
   .post-header {
