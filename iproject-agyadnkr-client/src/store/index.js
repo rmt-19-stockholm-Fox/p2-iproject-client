@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from 'axios';
 import router from '../router/index';
+import Swal from 'sweetalert2';
 
 Vue.use(Vuex);
 
@@ -80,7 +81,11 @@ export default new Vuex.Store({
 
         }
       } catch (error) {
-        console.log(error.response)
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.response.data.message
+        })
       }
 
     },
@@ -109,34 +114,59 @@ export default new Vuex.Store({
           commit('ADD_ALL_LOCATION', result)
         })
       } catch (error) {
-        console.log(error.response.data)
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.response.data.message
+        })
       }
     },
 
     async loginHandler({ commit, dispatch }, payload) {
       try {
-        try {
-          const result = await axios({
-            method: 'POST',
-            url: `${ORIGIN}/login`,
-            data: payload
-          })
+        const result = await axios({
+          method: 'POST',
+          url: `${ORIGIN}/login`,
+          data: payload
+        })
 
-          console.log(result)
-          localStorage.setItem('access_token', result.data.access_token)
-          localStorage.setItem('userId', result.data.id)
-          localStorage.setItem('userEmail', result.data.email)
-          localStorage.setItem('userRole', result.data.role)
+        console.log(result)
+        localStorage.setItem('access_token', result.data.access_token)
+        localStorage.setItem('userId', result.data.id)
+        localStorage.setItem('userEmail', result.data.email)
+        localStorage.setItem('userRole', result.data.role)
 
-          dispatch('fetchLocations')
-          commit('SET_ISLOGGED', true)
+        dispatch('fetchLocations')
+        commit('SET_ISLOGGED', true)
 
-          router.push({ name: 'Home' });
-        } catch (error) {
+        router.push({ name: 'Home' });
 
-        }
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.response.data.message
+        })
+      }
+    },
+
+    async registerHandler(context, payload) {
+      try {
+        await axios({
+          method: 'POST',
+          url: `${ORIGIN}/register`,
+          data: payload
+        })
+
+        router.push({ name: 'Login' })
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.response.data.message
+        })
       }
     }
   },
-    modules: {},
-  });
+  modules: {},
+});
