@@ -47,6 +47,13 @@ export default {
       }
     }
   },
+  beforeCreate() {
+    if (window.location.hostname == 'localhost') {
+      storage.apiHost.set('http://localhost:3000');
+    } else {
+      storage.apiHost.set('https://instafood-danielrylv.herokuapp.com');
+    }
+  },
   created() {
     this.initSignIn();
   }

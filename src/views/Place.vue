@@ -28,6 +28,7 @@
 <script>
 import { mapState } from 'vuex';
 import PostsList from '../components//PostsList.vue';
+import storage from '../helpers/storage';
 
 export default {
   name: 'Profile',
@@ -36,7 +37,7 @@ export default {
     ...mapState(['placeProfile']),
     placePhoto() {
       return this.placeProfile.photos
-        ? `http://localhost:3000/places/photo?ref=${this.placeProfile.photos[0].photo_reference}`
+        ? `${storage.apiHost}/places/photo?ref=${this.placeProfile.photos[0].photo_reference}`
         : this.placeProfile.icon;
     },
     placeAddress() {

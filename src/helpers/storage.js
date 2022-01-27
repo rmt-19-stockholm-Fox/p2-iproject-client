@@ -17,6 +17,7 @@ StorageProperty.prototype.clear = function() {
 class Storage {
   constructor() {
     this.accessToken = new StorageProperty('access_token');
+    this.apiHost = new StorageProperty('api_host');
   }
 }
 
