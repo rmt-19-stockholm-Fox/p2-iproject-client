@@ -39,16 +39,14 @@
         </span>
       </div>
       <div class="post-content">
-        <span v-if="isPostContentLong && showingLess" class="short">
-          {{ shortenPostContent }}
-          <span v-if="isPostContentLong"
+        <span v-if="isPostContentLong && showingLess" class="short"
+        >{{ shortenPostContent }}<span v-if="isPostContentLong"
             @click="showingLess = false"
             class="post-content-toggler"
           > .....more</span>
         </span>
-        <span v-if="!isPostContentLong || !showingLess" class="long">
-          {{ post.content }}
-          <span v-if="isPostContentLong"
+        <span v-if="!isPostContentLong || !showingLess" class="long"
+        >{{ post.content }}<span v-if="isPostContentLong"
             @click="showingLess = true"
             class="post-content-toggler"
           > .....less</span>
