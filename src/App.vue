@@ -1,16 +1,27 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">
-        Home
-      </router-link>
-      <router-link v-if="$store.getters.isLoggedIn" :to="{ path: `/profile/${$store.state.user.id}`}">
-        Profile
-      </router-link>
-      <a v-if="!$store.getters.isLoggedIn" @click="loginGoogle">Login</a>
-      <router-link v-if="$store.getters.isLoggedIn" to="/logout">
-        Logout
-      </router-link>
+    <div id="nav" class="container">
+      <div class="row">
+        <div class="col">
+          <div class="navbar-left">
+            <h3 @click="$router.push('/')">InstaFood</h3>
+            <router-link to="/">
+              Home
+            </router-link>
+            <router-link v-if="$store.getters.isLoggedIn" :to="{ path: `/profile/${$store.state.user.id}`}">
+              Profile
+            </router-link>
+          </div>
+        </div>
+        <div class="col">
+          <div class="navbar-right">
+            <a v-if="!$store.getters.isLoggedIn" @click="loginGoogle">Sign In</a>
+            <router-link v-if="$store.getters.isLoggedIn" to="/logout">
+              Sign Out
+            </router-link>
+          </div>
+        </div>
+      </div>
     </div>
     <router-view/>
     <ImagePreview></ImagePreview>
@@ -72,7 +83,25 @@ export default {
 }
 
 #nav {
-  padding: 30px;
+  padding: 30px 30px 10px 30px;
+  margin-bottom: 45px;
+  border-bottom: 1px solid #ddd;
+
+  h3 {
+    margin-left: 20px;
+    margin-right: 45px;
+    cursor: pointer;
+  }
+
+  .navbar-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-right {
+    display: flex;
+    justify-content: end;
+  }
 
   a {
     margin-left: 5px;
@@ -86,7 +115,7 @@ export default {
     }
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: green;
     }
   }
 }
