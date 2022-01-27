@@ -74,6 +74,16 @@
           >Don't have account? Register here</router-link
         >
       </form>
+      <div class="my-16 mx-auto">
+        <GoogleLogin
+        class="btn btn-primary self-center"
+        :params="params"
+        :renderParams="renderParams"
+        :onSuccess="onSuccess"
+        :onFailure="onFailure"
+      ></GoogleLogin>
+      </div>
+      
     </div>
     <div class="basis-8/12 h-screen">
       <img
@@ -86,20 +96,45 @@
 </template>
 
 <script>
+import GoogleLogin from 'vue-google-login';
 import { mapActions } from "vuex";
 
 export default {
   name: "Login",
+  components: {
+    GoogleLogin,
+  },
   data() {
     return {
       login: {},
+      renderParams: {
+        width: 300,
+        height: 50,
+        longtitle: true,
+      },
+      params: {
+        client_id:
+          "369972256827-aabsb84t9ultj32em42jd7ngl1m9g04p.apps.googleusercontent.com",
+      },
     };
   },
   computed: {},
   methods: {
-    ...mapActions(["loginHandler", "twitterSignInHandler"]),
+    ...mapActions([
+      "loginHandler",
+      "twitterSignInHandler",
+      "loginGoogleHandler",
+    ]),
     loginSubmit() {
       this.loginHandler(this.login);
+    },
+
+    async onSuccess(googleUser) {
+      try {
+        this.loginGoogleHandler(googleUser);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

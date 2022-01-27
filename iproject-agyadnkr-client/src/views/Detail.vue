@@ -1,11 +1,14 @@
 <template>
   <div id="Home" class="w-screen min-h-screen flex flex-row bg-white">
     <div class="overflow-y-auto basis-4/12 h-screen flex flex-col">
-      <Card
+    <h1>detailLoc.name</h1>
+    <h1>detailLoc.address</h1>
+    <h1>detailLoc.price</h1>
+      <!-- <Card
       v-for="location in allLocation"
       :key="location.id"
       :location="location"
-      ></Card>
+      ></Card> -->
     </div>
     <div class="basis-8/12 h-screen">
       <GoogleMaps></GoogleMaps>
@@ -14,19 +17,16 @@
 </template>
 
 <script>
-// @ is an alias to /src
-import GoogleMaps from "../components/GoogleMaps.vue";
-import Card from "../components/Cards.vue";
 import { mapState } from 'vuex'
+import GoogleMaps from '../components/GoogleMaps.vue'
 
 export default {
-  name: "Home",
+  name: 'LocationDetail',
   components: {
-    GoogleMaps,
-    Card,
+    GoogleMaps
   },
   computed: {
-    ...mapState(['allLocation'])
+    ...mapState(['detailLoc'])
   }
-};
+}
 </script>

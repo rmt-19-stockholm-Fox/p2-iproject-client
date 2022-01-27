@@ -54,7 +54,7 @@ const routes = [
     path: "/location/:locationId",
     name: "LocationDetail",
     component: () =>
-      import("../views/About.vue"),
+      import("../views/Detail.vue"),
   },
 ];
 
