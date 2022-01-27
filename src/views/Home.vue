@@ -9,18 +9,21 @@
          <datalist id="countryname">
               <option v-for="x in storecount" :key="x">{{x}}</option>
           </datalist>
-        <br>
+           <small class="form-text text-muted">*)Required</small>
             </div>
+            <br>
             <div class="form-group">
         <label for="year">Year:</label>
          <input type="number" id="year" name="year" class="form-control text-muted" v-model="year" min="2020" placeholder="2020"><br>
                 </div>
                 <div class="form-group">
         <label for="pleave">Paid-leaves:</label>
-         <input type="number" id="pleave" name="pleave" class="form-control text-muted" v-model="forcednum" min="0" placeholder="Number of paid-leaves you are willing to make for the perfect holiday"><br>
+         <input type="number" id="pleave" name="pleave" class="form-control text-muted" v-model="forcednum" min="0" placeholder="Number of paid-leaves you are willing to make for the perfect holiday">
+         <small class="form-text text-muted">*)Required</small>
                 </div>
+                <br>
                 <div class="form-group">
-        <label class="form-check-label">Weekly Day-off(s):</label>
+        <label class="form-check-label">Weekly day-off(s):</label>
         <br>
         <label class="form-check-label" for="exampleCheck1">MON:</label>
          <input type="checkbox" class="form-check-input" v-model="nmdayoff"  value="mon" id="exampleCheck1">
@@ -97,7 +100,7 @@ export default {
   data() {
     return {
       country : "",
-      year: "",
+      year: 2020,
       forcednum: "",
       nmdayoff: [`sat`, `sun`],
       mdist: "",
