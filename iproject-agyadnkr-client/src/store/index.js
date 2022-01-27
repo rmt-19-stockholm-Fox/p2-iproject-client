@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 
 Vue.use(Vuex);
 
-const ORIGIN = 'http://localhost:3000'
+const ORIGIN = 'https://iproject-agyadnkr.herokuapp.com'
 
 export default new Vuex.Store({
   state: {
@@ -104,7 +104,7 @@ export default new Vuex.Store({
 
     async detailHandler({ commit }, locationId) {
       try {
-        const result = await axios.get(`${ORIGIN}/${locationId}`)
+        const result = await axios.get(`${ORIGIN}/locations/${locationId}`)
 
         commit('ADD_DETAIL_LOC', result.data)
 
