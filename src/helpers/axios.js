@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = window.location.hostname === 'localhost'
+  ? 'http://localhost:3000'
+  : 'https://instafood-danielrylv.herokuapp.com';
 
 let pendingRequestsCount = 0;
 
