@@ -11,7 +11,7 @@
         :key="index"
         :position="loc.position"
         :clickable="true"
-        :draggable="true"
+        :draggable="false"
         @click="center = loc.position"
       ></gmap-marker>
     </gmap-map>

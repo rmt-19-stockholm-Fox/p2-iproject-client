@@ -6,7 +6,8 @@ import Swal from 'sweetalert2';
 
 Vue.use(Vuex);
 
-const ORIGIN = 'https://iproject-agyadnkr.herokuapp.com'
+// const ORIGIN = 'https://iproject-agyadnkr.herokuapp.com'
+const ORIGIN = 'http://localhost:3000'
 
 export default new Vuex.Store({
   state: {
@@ -16,10 +17,12 @@ export default new Vuex.Store({
       lng: 110.3989719
     },
     allLocation: [],
+    myFavourite: [],
     locationMarkers: [],
     locPlaces: [],
     existingPlace: {},
-    detailLoc: {}
+    detailLoc: {},
+    selectedFile: null
   },
   mutations: {
     SET_ISLOGGED(state, payload) {
@@ -27,6 +30,9 @@ export default new Vuex.Store({
     },
     ADD_ALL_LOCATION(state, payload) {
       state.allLocation = payload;
+    },
+    ADD_MY_FAVOURITE(state, payload) {
+      state.myFavourite = payload;
     },
     ADD_LOCATION_MARKER(state, payload) {
       state.locationMarkers.push({ position: payload })
@@ -45,6 +51,9 @@ export default new Vuex.Store({
     },
     SET_PRICE(state, payload) {
       state.existingPlace.price = payload;
+    },
+    SET_SELECTED_FILE(state, payload) {
+      state.selectedFile = payload;
     }
   },
   actions: {
@@ -75,8 +84,14 @@ export default new Vuex.Store({
           }
           // console.log(payload, '>>>>> payload')
           const result = await axios.post(`${ORIGIN}/locations`, payload)
+
+          const fd = new FormData();
+          fd.append('image', state.selectedFile, state.selectedFile.name)
+          console.log(fd)
+          const imageResult = await axios.post(`${ORIGIN}/image-upload`, fd)
           console.log(result);
-          console.log(state.locationMarkers)
+          console.log(imageResult);
+          // console.log(state.locationMarkers)
           // console.log(state.locPlaces)
           // console.log(marker);
           dispatch('fetchLocations');
@@ -209,6 +224,23 @@ export default new Vuex.Store({
         })
 
         router.push({ name: 'Login' })
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.response.data.message
+        })
+      }
+    },
+
+    async fetchFavourite({ commit, state }) {
+      try {
+        console.log('masuk store')
+        const access_token = localStorage.getItem('access_token')
+        const result = await axios.get(`${ORIGIN}/favourite`, { headers: { access_token }})
+
+        commit('ADD_MY_FAVOURITE', result.data);
+        console.log(state.myFavourite)
       } catch (error) {
         Swal.fire({
           icon: 'error',

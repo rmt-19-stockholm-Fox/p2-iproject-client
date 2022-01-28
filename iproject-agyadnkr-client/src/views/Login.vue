@@ -49,7 +49,7 @@
               v-model="login.password"
               type="password"
               class="w-10/12 h-10 py-6 px-4 text-xl border rounded-md"
-              placeholder="Input username/password"
+              placeholder="Insert password"
             />
           </div>
         </div>

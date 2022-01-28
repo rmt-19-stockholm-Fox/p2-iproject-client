@@ -6,7 +6,7 @@
     <div class="basis-4/12 h-screen flex flex-col">
       <div class="my-24">
         <p
-          class="text-6xl px-12"
+          class="text-6xl px-6"
           style="font-family: 'Encode Sans', sans-serif; font-weight: 700"
         >
           Add New Location
@@ -20,11 +20,11 @@
             Find Location
           </p>
         <gmap-autocomplete
-          class="w-10/12 py-4 px-4 mt-4 mb-8 border rounded-md text-xl"
+          class="w-10/12 py-4 px-4 mt-2 mb-2 border rounded-md text-xl"
           @place_changed="initialMarker"
         ></gmap-autocomplete>
       </label>
-      <div class="grid grid-cols-1 mt-8 place-items-center">
+      <div class="grid grid-cols-1 mt-4 place-items-center">
         <div class="w-full flex-flex-col mt-8">
           <p
             class="text-left text-xl py-4 mx-20"
@@ -69,6 +69,22 @@
           type="number"
           class="w-10/12 h-10 py-6 px-4 text-xl border rounded-md"
           placeholder="Input price here"
+        />
+        </div>
+        <div class="w-full flex-flex-col mt-8">
+           <p
+            class="text-left text-xl py-4 mx-20"
+            style="font-family: 'Encode Sans', sans-serif; font-weight: 700"
+          >
+            Add Image
+          </p>
+        <input
+          @change="onFileSelected"
+          name="image"
+          enctype="multipart/form-data"
+          type="file"
+          class="w-10/12 h-10 pt-4 pb-12 px-4 text-xl border rounded-md"
+          placeholder="Input image here"
         />
         </div>
         <button
@@ -121,6 +137,7 @@ export default {
       options: {
         fullscreenControl: false,
       },
+      selected: null
     };
   },
   computed: {
@@ -137,7 +154,14 @@ export default {
   },
   methods: {
     ...mapActions(["addLocationMarker", "initMarker", "fetchLocations"]),
-    ...mapMutations(["SET_CENTER"]),
+    ...mapMutations(["SET_CENTER", "SET_SELECTED_FILE"]),
+
+    onFileSelected(event) {
+      // console.log(event)
+      this.selectedFile = event.target.files[0];
+      // console.log(this.selectedFile)
+      this.$store.commit("SET_SELECTED_FILE", event.target.files[0]) 
+    },
 
     // Set center using  google geolocation
     locateGeoLocation: function () {
