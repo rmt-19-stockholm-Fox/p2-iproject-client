@@ -2,7 +2,7 @@
   <div id="app">
     <section id="hero" class="d-flex align-items-center">
     <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
-      <button v-show="getstatstart!==false" class="btn btn-dark" @click="reset">go back</button> <br> <br> <br>
+      <button v-show="getstatstart!==false" class="btn btn-dark" @click="reset">Restart</button> <br> <br><br>
       <div v-show="getstatstart === false" class="row justify-content-center">
         <div class="col-xl-7 col-lg-9 text-center">
           <h1>PlanMeMyHoliday</h1>
@@ -63,12 +63,22 @@ export default {
       this.$store.commit(`CHANGE_PERFTIME`, false)
       this.$store.commit(`CHANGE_START2`, false)
       this.$store.commit(`CHANGE_PERFPLACE`, false)
+      this.$store.commit(`CHANGE_PERFHOTEL`, false)
+      this.$store.commit(`CHANGE_START3`, false)
+      this.$store.commit(`CHANGE_SELECTEDD`, false)
+      this.$store.commit(`CHANGE_SELECTEDP`, false)
+      this.$store.commit(`CHANGE_SELECTEDH`, false)
+       this.$store.commit(`CHANGE_ADD`, false)
+       this.$store.commit(`CHANGE_DONE`, false)
       localStorage.clear()
-    }
+    },
   },
   computed: {
     getstatstart() {
       return this.$store.state.start
+    },
+    getstatstart2() {
+      return this.$store.state.start2
     },
     getperftime() {
       return this.$store.state.perftime
@@ -77,6 +87,17 @@ export default {
   created(){
     if (localStorage.started) {
       this.start()
+    }
+    if (localStorage.dates) {
+      this.$store.commit(`CHANGE_SELECTEDD`, localStorage.dates.split(`,`))
+      this.$store.commit(`CHANGE_PERFTIME`, true)
+      this.$store.commit(`CHANGE_START2`, true)
+    }
+    if (localStorage.places) {
+      this.$store.commit(`CHANGE_SELECTEDP`, localStorage.placesjs)
+      this.$store.commit(`CHANGE_ADD`, localStorage.places)
+       this.$store.commit(`CHANGE_PERFPLACE`, true)
+      this.$store.commit(`CHANGE_START3`, true)
     }
   }
     
@@ -141,6 +162,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 5px;
   transition: 0.5s;
   margin-top: 30px;
+  margin-bottom: 30px;
   color: #fff;
   background: #aaafac;
 }
@@ -148,14 +170,14 @@ h1, h2, h3, h4, h5, h6 {
   background: #61e4a7;
 }
 #hero .icon-boxes {
-  margin-top: 100px;
+  margin-top: 20px;
 }
 #hero .icon-box {
   padding: 50px 30px;
   position: relative;
   overflow: hidden;
   background: #fff;
-  box-shadow: 0 0 25px 0 rgba(18, 66, 101, 0.08);
+  box-shadow: 0 0 10px 0 rgba(18, 66, 101, 0.08);
   transition: all 0.3s ease-in-out;
   border-radius: 8px;
   z-index: 1;
