@@ -182,7 +182,6 @@ export default new Vuex.Store({
   actions: {
     async getmydays(context, plod) {
       try {
-        console.log(plod);
         const resu = await axios.post(`${this.state.server}findtime`, plod);
         context.commit(`CHANGE_PERFTIME`, resu.data.output);
       } catch (error) {
@@ -195,9 +194,7 @@ export default new Vuex.Store({
     },
     async getmyplaces(context, plod) {
       try {
-        console.log(plod);
         const resu = await axios.post(`${this.state.server}findplace`, plod);
-        console.log(resu.data);
         context.commit(`CHANGE_PERFPLACE`, resu.data);
       } catch (error) {
         Vue.swal({
@@ -209,9 +206,7 @@ export default new Vuex.Store({
     },
     async getmyhotel(context, plod) {
       try {
-        console.log(plod);
         const resu = await axios.post(`${this.state.server}findhotel`, plod);
-        console.log(resu.data);
         context.commit(`CHANGE_PERFHOTEL`, resu.data);
       } catch (error) {
         Vue.swal({

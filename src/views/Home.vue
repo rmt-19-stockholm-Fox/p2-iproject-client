@@ -223,7 +223,6 @@ export default {
       }
     },
     start4(nyem){
-      console.log(nyem);
        this.$store.commit(`CHANGE_SELECTEDH`, nyem)
       this.$store.commit(`CHANGE_DONE`, true)
     },
