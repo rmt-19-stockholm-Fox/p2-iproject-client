@@ -6,7 +6,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    server: `http://localhost:3000/`,
+    server: `
+    https://planmyholiday.herokuapp.com/`,
     start: false,
     start2: false,
     start3: false,
